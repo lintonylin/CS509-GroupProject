@@ -1,0 +1,1 @@
+{"lastDeploymentHandler":"edu.norwich.aws.calculator.CalculatorHandler","lastInvokeHandler":null,"handlerMetadata":{"edu.norwich.aws.calculator.CalculatorHandler":{"deployment":{"regionId":"us-east-1","awsLambdaFunctionName":"addCalculator","awsIamRoleName":"developer","awsS3BucketName":"cs509norwichfans","memory":0,"timeout":0},"invoke":null}},"lastInvokedHandlerDeployed":false}
