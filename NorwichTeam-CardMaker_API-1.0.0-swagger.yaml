@@ -1,17 +1,21 @@
----
-swagger: "2.0"
+swagger: '2.0'
 info:
   description: CardMaker System -- CS509 GROUP PROJECT API
-  version: 1.0.0
+  version: "1.0.0"
   title: CardMaker API
+  # Team developer contact info 
   contact:
-    email: zlin5@wpi.edu
+    email: zlin5@wpi.edu #eliu2@wpi.edu, hhong2@wpi.edu
+
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-host: virtserver.swaggerhub.com
-basePath: /NorwichTeam/CardMaker_API/1.0.0
+
+# tags are used for organizing operations
 tags:
+#- name: admins
+#  description: Secured Admin-only calls
+
 - name: card
   description: Operations work on card entity
 - name: visualElement
@@ -22,8 +26,7 @@ tags:
   description: Operations can change or delet existing data in DB
 - name: reader
   description: Operations can only access data from DB and not modify any data
-schemes:
-- https
+
 paths:
   /createCard:
     post:
@@ -31,8 +34,8 @@ paths:
       - card
       - adder
       summary: create a new card
-      description: Create a new card by given event type and recipient
       operationId: createCard
+      description: Create a new card by given event type and recipient
       consumes:
       - application/json
       produces:
@@ -41,7 +44,6 @@ paths:
       - in: body
         name: Card
         description: check the existence, if none, create a new card
-        required: false
         schema:
           $ref: '#/definitions/Card'
       responses:
@@ -57,8 +59,8 @@ paths:
       - editor
       - card
       summary: request to delete a card
-      description: Requests to delete a card
       operationId: requestDeleteCard
+      description: Requests to delete a card
       consumes:
       - application/json
       produces:
@@ -67,7 +69,6 @@ paths:
       - in: body
         name: Card
         description: check existence, if found, delete it.
-        required: false
         schema:
           $ref: '#/definitions/Card'
       responses:
@@ -83,8 +84,8 @@ paths:
       - editor
       - card
       summary: request to duplicate a card
-      description: Requests to duplicate a card
       operationId: requestDuplicateCard
+      description: Requests to duplicate a card
       consumes:
       - application/json
       produces:
@@ -93,7 +94,6 @@ paths:
       - in: body
         name: DuplicateCardRequest
         description: Request to duplicate a card
-        required: false
         schema:
           $ref: '#/definitions/DuplicateCard'
       responses:
@@ -111,8 +111,8 @@ paths:
       - card
       - reader
       summary: request to get list of all cards
-      description: Requests to get card list
       operationId: getCardList
+      description: Requests to get card list
       produces:
       - application/json
       parameters: []
@@ -122,73 +122,99 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Card'
+              $ref: "#/definitions/Card"
         400:
           description: invalid request
         500:
           description: server error
+  # /getCard:
+  #   get:
+  #     tags:
+  #     - reader
+  #     - card
+  #     summary: request to get a card
+  #     operationId: getCard
+  #     description: Requests to get a card
+  #     consumes:
+  #     - application/json
+  #     produces:
+  #     - application/json
+  #     parameters:
+  #     - in: body
+  #       name: Card
+  #       description: Request to get a card
+  #       schema:
+  #         $ref: '#/definitions/Card'
+  #     responses:
+  #       200:
+  #         description: card got
+  #       400:
+  #         description: invalid request
+  #       500:
+  #         description: server error
+  
   /addTextItem:
     post:
-      tags:
-      - adder
-      - visualElement
-      summary: Add Text Visual Element
+      summary: Add Text Visual Element 
       description: adding new text element to given card
+      tags:
+        - adder
+        - visualElement
       parameters:
       - in: body
         name: TextInit
         description: parameter for new text Item init
-        required: false
         schema:
           $ref: '#/definitions/TextInit'
       responses:
         200:
           description: OK
-        400:
-          description: fail to create element
         404:
           description: card not found
+        400:
+          description: fail to create element
+  
+          
   /addImageItem:
     post:
-      tags:
-      - adder
-      - visualElement
-      summary: Add Image Visual Element
+      summary: Add Image Visual Element 
       description: adding new Image element to given card
       consumes:
       - application/json
       produces:
       - application/json
+      tags:
+        - adder
+        - visualElement
       parameters:
       - in: body
         name: ImageInit
         description: parameter for new Image Item init
-        required: false
         schema:
           $ref: '#/definitions/ImageInit'
       responses:
         200:
           description: OK
-        400:
-          description: fail to create element
         404:
           description: card not found
+        400:
+          description: fail to create element
+  
   /deleteVisualElement:
     post:
-      tags:
-      - editor
-      - visualElement
       summary: Delete Visual Element
       description: delete certain visual element
       consumes:
       - application/json
       produces:
       - application/json
+      tags:
+        - editor
+        - visualElement
       parameters:
       - in: body
         name: Element
         description: the element information
-        required: false
         schema:
           $ref: '#/definitions/Element'
       responses:
@@ -198,22 +224,46 @@ paths:
           description: fail to delete
         404:
           description: Card or element is not exist.
+  # /editVisualElement:
+  #   post:
+  #     summary: Edit Visual Element
+  #     description: Edit certain visual element
+  #     consumes:
+  #     - application/json
+  #     produces:
+  #     - application/json
+  #     tags:
+  #       - editor
+  #       - visualElement
+  #     parameters:
+  #     - in: body
+  #       name: Element
+  #       description: the element information
+  #       schema:
+  #         $ref: '#/definitions/EditElement'
+  #     responses:
+  #       200:
+  #         description: sucesseful delete
+  #       400:
+  #         description: fail to delete
+  #       404:
+  #         description: Card or element is not exist.
   /editTextElement:
     post:
-      tags:
-      - editor
-      - visualElement
       summary: Edit Text Element
       description: Edit certain Text element
       consumes:
       - application/json
       produces:
       - application/json
+      tags:
+        - editor
+        - visualElement
       parameters:
       - in: body
-        name: TextElement
+        name: 
+          TextElement
         description: the element information
-        required: false
         schema:
           $ref: '#/definitions/EditTextElement'
       responses:
@@ -225,20 +275,19 @@ paths:
           description: Card or element is not exist.
   /editImageElement:
     post:
-      tags:
-      - editor
-      - visualElement
       summary: Edit Image Element
       description: Edit certain Image element
       consumes:
       - application/json
       produces:
       - application/json
+      tags:
+        - editor
+        - visualElement
       parameters:
       - in: body
         name: ImageElement
         description: the element information
-        required: false
         schema:
           $ref: '#/definitions/EditImageElement'
       responses:
@@ -248,13 +297,14 @@ paths:
           description: fail to delete
         404:
           description: Card or element is not exist.
+          
   /elementList:
     get:
       tags:
       - reader
       - visualElement
-      summary: get all element on given card
       description: get all element on given card
+      summary: get all element on given card
       consumes:
       - application/json
       produces:
@@ -263,7 +313,6 @@ paths:
       - in: body
         name: Card
         description: given Card
-        required: false
         schema:
           $ref: '#/definitions/Card'
       responses:
@@ -272,17 +321,18 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/ElementList'
+              $ref: "#/definitions/ElementList"
         400:
           description: fail to load element list
         404:
           description: Card not exist
+          
   /displayCard:
     post:
       tags:
       - reader
-      summary: Display
       description: Display the given card
+      summary: Display
       consumes:
       - application/json
       produces:
@@ -291,7 +341,6 @@ paths:
       - in: body
         name: Card
         description: given Card
-        required: false
         schema:
           $ref: '#/definitions/Card'
       responses:
@@ -301,17 +350,18 @@ paths:
           description: fail to load Card
         404:
           description: Card not exist
+          
   /imageList:
     get:
       tags:
       - reader
-      summary: get Image list from S3 bucket
       description: get all Image In S3 bucket
+      summary: get Image list from S3 bucket
       produces:
       - application/json
       parameters: []
       responses:
-        200:
+        200: 
           description: OK
           schema:
             type: array
@@ -319,6 +369,8 @@ paths:
               type: string
         400:
           description: fail to get images
+
+    
 definitions:
   Card:
     type: object
@@ -332,6 +384,7 @@ definitions:
         type: string
       orientation:
         type: boolean
+
   DuplicateCard:
     type: object
     required:
@@ -342,13 +395,15 @@ definitions:
         $ref: '#/definitions/Card'
       newrecipient:
         type: string
+
+  
   TextInit:
     type: object
     required:
-    - card
-    - page
     - position
     - text
+    - page
+    - card
     properties:
       card:
         $ref: '#/definitions/Card'
@@ -363,10 +418,10 @@ definitions:
   ImageInit:
     type: object
     required:
-    - card
+    - position
     - imageId
     - page
-    - position
+    - card
     properties:
       card:
         $ref: '#/definitions/Card'
@@ -374,19 +429,21 @@ definitions:
         $ref: '#/definitions/Position'
       imageId:
         type: integer
+        default: -1
       page:
         type: integer
       url:
         type: string
+        
   Element:
     type: object
     required:
-    - card
-    - eid
+      - card
+      - eid
     properties:
       card:
         $ref: '#/definitions/Card'
-      eid:
+      eid: 
         type: integer
   ElementList:
     type: object
@@ -402,7 +459,7 @@ definitions:
   EditTextElement:
     type: object
     required:
-    - element
+      - element
     properties:
       position:
         $ref: '#/definitions/Position'
@@ -412,10 +469,12 @@ definitions:
         type: string
       text:
         type: string
+        
+        
   EditImageElement:
     type: object
     required:
-    - element
+      - element
     properties:
       position:
         $ref: '#/definitions/Position'
@@ -428,12 +487,12 @@ definitions:
   Position:
     type: object
     required:
-    - height
-    - left
-    - top
-    - width
+      - left
+      - top
+      - width
+      - height
     properties:
-      left:
+      left :
         type: integer
       top:
         type: integer
@@ -441,3 +500,13 @@ definitions:
         type: integer
       height:
         type: integer
+        
+
+
+# Added by API Auto Mocking Plugin
+host: virtserver.swaggerhub.com
+# basePath: /heineman/Calculator/1.0.0
+schemes:
+ - https
+# Added by API Auto Mocking Plugin
+basePath: /NorwichTeam/CardMaker_API/1.0.0
