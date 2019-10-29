@@ -20,6 +20,8 @@ import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.S3Object;
 
+import edu.norwich.cs509.card.LambdaFunctionHandler;
+
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
