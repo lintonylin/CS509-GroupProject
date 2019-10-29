@@ -35,22 +35,29 @@ public class CreateCardHandler implements RequestStreamHandler {
         	node = Jackson.fromJsonString(node.get("body").asText(), JsonNode.class);
         }
         
-    	double arg1 = 0, arg2 = 0;
+    	String eventtype = "", recipient = "", orientation = "";
     	
-    	String param = node.get("arg1").asText();
+    	String param = node.get("eventtype").asText();
     	boolean error = false;
-		try {
-    		arg1 = Double.parseDouble(param);
-    	} catch (NumberFormatException nfe) {
-    		if (logger != null) {logger.log("Unable to parse:" + param + " as arg1"); }
+    	
+    	eventtype = param;
+    	// length==0 or not in preset eventtypes
+    	if (eventtype.length() == 0) {
+    		if (logger != null) {logger.log("Unable to parse:" + param + " as eventtype"); }
     		error = true;
     	}
     	
-		param = node.get("arg2").asText();
-		try {
-    		arg2 = Double.parseDouble(param);
-		} catch (NumberFormatException nfe) {
-    		if (logger != null) { logger.log("Unable to parse:" + param + " as arg2"); }
+    	param = node.get("recipient").asText();
+    	recipient = param;
+		if (recipient.length() == 0) {
+    		if (logger != null) {logger.log("Unable to parse:" + param + " as recipient"); }
+    		error = true;
+    	}
+		
+		param = node.get("orientation").asText();
+    	orientation = param;
+		if (orientation.length() == 0) {
+    		if (logger != null) {logger.log("Unable to parse:" + param + " as orientation"); }
     		error = true;
     	}
 	    
@@ -61,7 +68,10 @@ public class CreateCardHandler implements RequestStreamHandler {
 		if (error) {
 			statusCode = 400;
 		} else {
-	    	sum = arg1 + arg2; 
+	    	//sum = arg1 + arg2;
+			
+			
+			
 	    	statusCode = 200;
 		}
 		
