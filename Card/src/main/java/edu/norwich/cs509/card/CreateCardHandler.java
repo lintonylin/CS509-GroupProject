@@ -68,9 +68,9 @@ public class CreateCardHandler implements RequestStreamHandler {
 		if (error) {
 			statusCode = 400;
 		} else {
-	    	//sum = arg1 + arg2;
+	    	//create card, return 200;
 			
-			
+			//if card exists, return 409;
 			
 	    	statusCode = 200;
 		}
@@ -82,9 +82,7 @@ public class CreateCardHandler implements RequestStreamHandler {
 	 				         "  \"headers\" : { \n " +
 	 		                 "     \"Access-Control-Allow-Origin\" : \"*\", \n" + 
 	 				         "     \"Access-Control-Allow-Method\"  : \"GET,POST,OPTIONS\" \n" + 
-	 		                 "  }, \n" +
-	 				         "  \"body\" : \"" + "{ \\\"result\\\" : \\\"" + sum + "\\\" }" + "\" \n" +
-	 				         "}";
+	 		                 "  }, \n";
 	 		
 		// write out.
 		pw.print(response);
