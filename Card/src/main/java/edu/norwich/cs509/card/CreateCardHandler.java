@@ -56,10 +56,11 @@ public class CreateCardHandler implements RequestStreamHandler {
 		
 		param = node.get("orientation").asText();
     	orientation = param;
+    	// length==0 or not in preset orientation
 		if (orientation.length() == 0) {
     		if (logger != null) {logger.log("Unable to parse:" + param + " as orientation"); }
     		error = true;
-    	}
+    	}  
 	    
 	    PrintWriter pw = new PrintWriter(output);
 	    

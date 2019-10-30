@@ -1,0 +1,218 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Small Calculator",
+    "title": "Calculator"
+  },
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+   "/add": {
+      "post": {
+        "tags": [
+          "sumcomputation"
+        ],
+        "operationId": "SumValues",
+        "summary": "Sum two values",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Sum",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Sum"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "schema": {
+              "$ref": "#/definitions/SumResponse"
+            },
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string",
+                "description": "URI that may access the resource"
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "uri": "http://petstore.execute-api.us-east-1.amazonaws.com/petstore/pets",
+          "passthroughBehavior": "when_no_match",
+          "httpMethod": "POST",
+          "type": "http"
+        }
+      },
+      "options": {
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "headers": {
+              "Access-Control-Allow-Origin": {
+                "type": "string",
+                "description": "URI that may access the resource"
+              },
+              "Access-Control-Allow-Methods": {
+                "type": "string",
+                "description": "Method or methods allowed when accessing the resource"
+              },
+              "Access-Control-Allow-Headers": {
+                "type": "string",
+                "description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the request."
+              }
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Access-Control-Allow-Methods": "'POST,GET,OPTIONS'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key'",
+                "method.response.header.Access-Control-Allow-Origin": "'*'"
+              }
+            }
+          },
+          "passthroughBehavior": "when_no_match",
+          "requestTemplates": {
+            "application/json": "{\"statusCode\": 200}"
+          },
+          "type": "mock"
+        }
+      }
+    },
+   },
+  "definitions": {
+    "Sum": {
+      "type": "object",
+      "properties": {
+        "arg1": {
+          "type": "string"
+        },
+        "g2": {
+          "type": "string"
+        },
+      }
+    },
+   "Empty": {
+      "type": "object"
+    },
+    "SumResponse": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "type": "string"
+        }
+      }
+    },
+   
+  },
+  "x-amazon-apigateway-documentation": {
+    "version": "v1.0",
+    "createdDate": "2019-09-16T07:03:59Z",
+    "documentationParts": [
+      {
+        "location": {
+          "type": "API"
+        },
+        "properties": {
+          "info": {
+            "description": "Your first API with Amazon API Gateway. This is a sample API that integrates via HTTP"
+          }
+        }
+      },
+      {
+        "location": {
+          "type": "METHOD",
+          "path": "/add",
+          "method": "POST"
+        },
+        "properties": {
+          "tags": [
+            "result"
+          ],
+          "summary": "Add two values"
+        }
+      },
+     
+      {
+        "location": {
+          "type": "RESPONSE",
+          "method": "*",
+          "statusCode": "200"
+        },
+        "properties": {
+          "description": "Successful operation"
+        }
+      },
+      {
+        "location": {
+          "type": "RESPONSE_HEADER",
+          "method": "OPTIONS",
+          "statusCode": "200",
+          "name": "Access-Control-Allow-Headers"
+        },
+        "properties": {
+          "description": "Used in response to a preflight request to indicate which HTTP headers can be used when making the request."
+        }
+      },
+      {
+        "location": {
+          "type": "RESPONSE_HEADER",
+          "method": "OPTIONS",
+          "statusCode": "200",
+          "name": "Access-Control-Allow-Methods"
+        },
+        "properties": {
+          "description": "Method or methods allowed when accessing the resource"
+        }
+      },
+      {
+        "location": {
+          "type": "RESPONSE_HEADER",
+          "method": "*",
+          "statusCode": "200",
+          "name": "Access-Control-Allow-Origin"
+        },
+        "properties": {
+          "description": "URI that may access the resource"
+        }
+      },
+      {
+        "location": {
+          "type": "RESPONSE_HEADER",
+          "method": "GET",
+          "statusCode": "200",
+          "name": "Content-Type"
+        },
+        "properties": {
+          "description": "Media type of request"
+        }
+      }
+    ]
+  }
+}

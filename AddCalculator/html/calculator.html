@@ -1,0 +1,36 @@
+<html><head>
+<!-- relative path-name to access js -->
+<script type='text/javascript' src='../js/api.js'></script>
+<script type='text/javascript' src='../js/get_constantList.js'></script>
+<script type='text/javascript' src='../js/add.js'></script>
+<script type='text/javascript' src='../js/create.js'></script>
+<script type='text/javascript' src='../js/delete.js'></script>
+
+<script type="text/javascript">
+function initialize() {
+  
+   // get all constants
+   refreshConstantsList();
+}
+</script></head><body onload="initialize()">
+
+<h1>Request to add values </h1>
+
+<form name="addForm" method="post" name="addValues">
+  <input name="arg1" value="" /><input name="arg2" value="" /><input name="result" readonly/>
+  <input type="button" value="Submit"  onClick="JavaScript:handleAddClick(this)">
+</form>
+
+<h2>Constants</h2>
+
+<form name="createForm" method="post" name="createConstant">
+  <input name="name" value="" /><input name="value" value="" /><input name="result" readonly/>
+  <input type="button" value="Submit"  onClick="JavaScript:handleCreateClick(this)">
+</form>
+
+<h3>Existing Constants</h3>
+
+<div id="constantList"</div>
+
+</body>
+</html>

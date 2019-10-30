@@ -1,0 +1,140 @@
+<html><head><script type="text/javascript">
+// I WASTED TWO HOURS BY NOT APPENDING THE RESOURCE NAMES!!!!!!
+var stage = "https://0ov7jbns5d.execute-api.us-east-1.amazonaws.com/gamma/";
+var add_url = stage + "calculator";
+var create_url = stage + "constant";
+
+function processResponse(arg1, arg2, result) {
+  // Can grab any DIV or SPAN HTML element and can then manipulate its
+  // contents dynamically via javascript
+  console.log("result:" + result);
+  var js = JSON.parse(result);
+
+  var computation = js["result"];
+
+  // Update computation result
+  document.addForm.result.value = computation
+}
+
+function handleClick(e) {
+  var form = document.addForm;
+  var arg1 = form.arg1.value;
+  var arg2 = form.arg2.value;
+
+  var data = {};
+  data["arg1"] = arg1;
+  data["arg2"] = arg2;
+
+  var js = JSON.stringify(data);
+  console.log("JS:" + js);
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", add_url, true);
+
+  // send the collected data as JSON
+  xhr.send(js);
+
+  // This will process results and update HTML as appropriate. 
+  xhr.onloadend = function () {
+    console.log(xhr);
+    console.log(xhr.request);
+    if (xhr.readyState == XMLHttpRequest.DONE) {
+    	if (xhr.status == 200) {
+	      console.log ("XHR:" + xhr.responseText);
+	      processResponse(arg1, arg2, xhr.responseText);
+    	} else if (xhr.status == 400) {
+    		alert ("unable to process request");
+    	}
+    } else {
+      processResponse(arg1, arg2, "N/A");
+    }
+  };
+}
+
+ // send request to create a constant by uploading a base64-encoded string.
+  function handleUploadConstant(e) {
+	var form = document.createConstant;
+	var constantName = form.constantName.value;
+	var constantEncoding = form.base64Encoding.value; 
+	
+	// strip away header: by tokenizing on command, and choosing last value.
+	 
+    // data:text/plain;base64,MS41NTU3DQo=
+	var entries = constantEncoding.split(",");
+    var encoding = entries.pop();
+     
+	var data = {};
+	data["name"] = constantName;
+	data["value"] = encoding;
+
+	var js = JSON.stringify(data);
+	console.log("JS:" + js);
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", create_url, true);
+
+	// send the collected data as JSON
+	xhr.send(js);
+
+	// This will process results and update HTML as appropriate. 
+	xhr.onloadend = function () {
+	  console.log(xhr);
+	  console.log(xhr.request);
+	  if (xhr.readyState == XMLHttpRequest.DONE) {
+	  	if (xhr.status == 200) {
+	      console.log ("XHR:" + xhr.responseText);
+	      alert ("constant created!");
+	   	} else if (xhr.status == 400) {
+	   	  alert ("unable to process request");
+	   	} else if (xhr.status == 409) {
+	   	  alert ("That is a duplicate constant!");	
+	   	}
+	  } else {
+	    processResponse(arg1, arg2, "N/A");
+	  }
+	};
+  }
+</script></head><body>
+
+<h1>Request to add values </h1>
+
+<form name="addForm" method="post" name="addValues">
+  <input name="arg1" value="" /><input name="arg2" value="" /><input name="result" readonly/>
+  <input type="button" value="Compute Sum"  onClick="JavaScript:handleClick(this)">
+</form>
+
+<form name="createConstant" method="post" name="createConstant">
+   <input name="constantName" value="constantName" />
+   <input name="base64Encoding" readonly value=""/>
+   Select a constant in file: <input type="file" id="constantValue" name="constantValue">
+   <input type="button" id="createButton" value="Create Constant" disabled onClick="JavaScript:handleUploadConstant(this)">
+</form>
+
+<script>
+
+  // prepares the base64-encoded string and enabled button
+  function getBase64(file) {
+	var reader = new FileReader();
+	reader.readAsDataURL(file);
+
+	reader.onload = function () {
+	  document.createConstant.base64Encoding.value = reader.result;
+	  document.createConstant.createButton.disabled = false;
+	};
+  }
+
+  // When file is selected, stash base64 value in the encoding field.  
+  function handleFileSelect(evt) {
+    var files = evt.target.files; 
+    if (files[0].size > 64) {
+    	document.createConstant.base64Encoding.value = "";
+    	alert("File size too large to use:" + files[0].size + " bytes");
+    } else {
+    	getBase64(files[0]); // request the load (async)
+    }
+  }
+  
+  // register
+  document.getElementById('constantValue').addEventListener('change', handleFileSelect, false);
+</script>
+
+</body>
+</html>
