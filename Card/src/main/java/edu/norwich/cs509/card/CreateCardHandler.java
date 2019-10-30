@@ -14,11 +14,28 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.amazonaws.util.json.Jackson;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import edu.norwich.cs509.card.db.CreateCardDB;
+
 public class CreateCardHandler implements RequestStreamHandler {
 
+	LambdaLogger logger;
+	
+	boolean createCard(String eventtype, String recipient, String orientation) throws Exception {
+		if (logger != null) { logger.log("in createConstant"); }
+		CreateCardDB ccd = new CreateCardDB();
+		
+		// check if present
+		if (ccd.addCard(eventtype, recipient, orientation)){
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
 	@Override
 	  public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
-		LambdaLogger logger = null;
+		logger = null;
     	if (context != null) { logger = context.getLogger(); }
     	
 	    // load entire input into a String (since it contains JSON)
@@ -70,7 +87,17 @@ public class CreateCardHandler implements RequestStreamHandler {
 			statusCode = 400;
 		} else {
 	    	//create card, return 200;
-			
+			try {
+				if (createCard(eventtype, recipient, orientation)) {
+					statusCode = 200;
+				}
+				else {
+					statusCode = 409;
+				}
+			} catch (Exception e) {
+				logger.log("Unable to parse:" + param + " as orientation");
+				statusCode = 400;
+			}
 			//if card exists, return 409;
 			
 	    	statusCode = 200;
