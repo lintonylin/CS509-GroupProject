@@ -1,5 +1,7 @@
 package edu.norwich.cs509.card.db;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -36,7 +38,9 @@ public class CreateCardDB {
             return true;
 
         } catch (Exception e) {
-            throw new Exception("Failed to insert card: " + e.getMessage());
+        	StringWriter stringWriter = new StringWriter();
+        	e.printStackTrace(new PrintWriter(stringWriter));
+            throw new Exception("Failed to insert card: " + stringWriter.toString());
         }
     }
 }
