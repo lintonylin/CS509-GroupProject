@@ -1,72 +1,85 @@
 package edu.norwich.cs509.beta;
 
-import static org.mockito.Mockito.when;
-
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 
-import com.amazonaws.services.lambda.runtime.Context;
-import com.amazonaws.services.lambda.runtime.events.S3Event;
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.GetObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.util.json.Jackson;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import edu.norwich.cs509.card.CreateCardHandler;
 
 /**
  * A simple test harness for locally invoking your Lambda function handler.
  */
-@RunWith(MockitoJUnitRunner.class)
-public class CreateCardHandlerTest {
+public class CreateCardHandlerTest extends LambdaTest {
 
-    private final String CONTENT_TYPE = "image/jpeg";
-    private S3Event event;
+    void testInput(String incoming) throws IOException {
+    	CreateCardHandler handler = new CreateCardHandler();
 
-    @Mock
-    private AmazonS3 s3Client;
-    @Mock
-    private S3Object s3Object;
+        InputStream input = new ByteArrayInputStream(incoming.getBytes());
+        OutputStream output = new ByteArrayOutputStream();
 
-    @Captor
-    private ArgumentCaptor<GetObjectRequest> getObjectRequest;
+        handler.handleRequest(input, output, createContext("compute"));
 
-    @Before
-    public void setUp() throws IOException {
-        event = TestUtils.parse("/s3-event.put.json", S3Event.class);
-
-        // TODO: customize your mock logic for s3 client
-        ObjectMetadata objectMetadata = new ObjectMetadata();
-        objectMetadata.setContentType(CONTENT_TYPE);
-        when(s3Object.getObjectMetadata()).thenReturn(objectMetadata);
-        when(s3Client.getObject(getObjectRequest.capture())).thenReturn(s3Object);
+        JsonNode outputNode = Jackson.fromJsonString(output.toString(), JsonNode.class);
+        JsonNode body = Jackson.fromJsonString(outputNode.get("body").asText(), JsonNode.class);
+        //Assert.assertEquals(outgoing, body.get("result").asText());
+        Assert.assertEquals("200", outputNode.get("statusCode").asText());
     }
+	
+    void testFailInput(String incoming, String outgoing) throws IOException {
+    	CreateCardHandler handler = new CreateCardHandler();
 
-    private Context createContext() {
-        TestContext ctx = new TestContext();
+        InputStream input = new ByteArrayInputStream(incoming.getBytes());
+        OutputStream output = new ByteArrayOutputStream();
 
-        // TODO: customize your context here if needed.
-        ctx.setFunctionName("Your Function Name");
+        handler.handleRequest(input, output, createContext("compute"));
 
-        return ctx;
+        JsonNode outputNode = Jackson.fromJsonString(output.toString(), JsonNode.class);
+        Assert.assertEquals("400", outputNode.get("statusCode").asText());
     }
-
+	
+    
     @Test
-    public void testLambdaFunctionHandler() {
-        CreateCardHandler handler = new CreateCardHandler();
-        Context ctx = createContext();
-
-        //String output = handler.handleRequest(event, ctx);
-
-        // TODO: validate output here if needed.
-        //Assert.assertEquals(CONTENT_TYPE, output);
+    public void testCardSimple() {
+    	String SAMPLE_INPUT_STRING = "{\"eventtype\": \"birthday\", \"recipient\": \"Mary.H\", \"orientation\": \"landscape\"}";
+        
+        try {
+        	testInput(SAMPLE_INPUT_STRING);
+        } catch (IOException ioe) {
+        	Assert.fail("Invalid:" + ioe.getMessage());
+        }
     }
+    
+    /*
+    @Test
+    public void testCalculatorConstant() {
+    	String SAMPLE_INPUT_STRING = "{\"arg1\": \"pi\", \"arg2\": \"19\"}";
+        String RESULT = "22.141592635";
+        
+        try {
+        	testInput(SAMPLE_INPUT_STRING, RESULT);
+        } catch (IOException ioe) {
+        	Assert.fail("Invalid:" + ioe.getMessage());
+        }
+    }
+    
+    @Test
+    public void testFailInput() {
+    	String SAMPLE_INPUT_STRING = "{\"arg1\": \"- GARBAGE -\", \"arg2\": \"10\"}";
+        String RESULT = "";
+        
+        try {
+        	testFailInput(SAMPLE_INPUT_STRING, RESULT);
+        } catch (IOException ioe) {
+        	Assert.fail("Invalid:" + ioe.getMessage());
+        }
+    }*/
+    
 }
