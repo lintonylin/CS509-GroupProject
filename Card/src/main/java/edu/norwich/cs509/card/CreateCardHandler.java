@@ -8,8 +8,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
 
-import org.json.simple.JSONObject;
-
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
@@ -23,7 +21,7 @@ public class CreateCardHandler implements RequestStreamHandler {
 	LambdaLogger logger;
 	
 	boolean createCard(String eventtype, String recipient, String orientation) throws Exception {
-		if (logger != null) { logger.log("in createCard"); }
+		if (logger != null) { logger.log("in createConstant"); }
 		CreateCardDB ccd = new CreateCardDB();
 		
 		// check if present
@@ -39,7 +37,6 @@ public class CreateCardHandler implements RequestStreamHandler {
 	  public void handleRequest(InputStream input, OutputStream output, Context context) throws IOException {
 		logger = null;
     	if (context != null) { logger = context.getLogger(); }
-
     	
 	    // load entire input into a String (since it contains JSON)
 	    StringBuilder incoming = new StringBuilder();
@@ -62,7 +59,6 @@ public class CreateCardHandler implements RequestStreamHandler {
     	
     	eventtype = param;
     	// length==0 or not in preset eventtypes
-    	//TODO
     	if (eventtype.length() == 0) {
     		if (logger != null) {logger.log("Unable to parse:" + param + " as eventtype"); }
     		error = true;
@@ -78,7 +74,6 @@ public class CreateCardHandler implements RequestStreamHandler {
 		param = node.get("orientation").asText();
     	orientation = param;
     	// length==0 or not in preset orientation
-    	//TODO
 		if (orientation.length() == 0) {
     		if (logger != null) {logger.log("Unable to parse:" + param + " as orientation"); }
     		error = true;
@@ -87,6 +82,7 @@ public class CreateCardHandler implements RequestStreamHandler {
 	    PrintWriter pw = new PrintWriter(output);
 	    
 	    int statusCode;
+        double sum = 0;
 		if (error) {
 			statusCode = 400;
 		} else {
@@ -99,12 +95,12 @@ public class CreateCardHandler implements RequestStreamHandler {
 					statusCode = 409;
 				}
 			} catch (Exception e) {
-				logger.log("Unable to create card -- eventtype:" + eventtype + "  recipient:" + recipient + "  orientation:" + orientation + " e:" + e.getMessage());
+				logger.log("Unable to parse:" + param + " as orientation");
 				statusCode = 400;
 			}
 			//if card exists, return 409;
 			
-	    	//statusCode = 200;
+	    	statusCode = 200;
 		}
 		
 		// Needed for CORS integration...
@@ -114,7 +110,7 @@ public class CreateCardHandler implements RequestStreamHandler {
 	 				         "  \"headers\" : { \n " +
 	 		                 "     \"Access-Control-Allow-Origin\" : \"*\", \n" + 
 	 				         "     \"Access-Control-Allow-Method\"  : \"GET,POST,OPTIONS\" \n" + 
-	 		                 "  }, \n";
+	 		                 "  }, \n}";
 	 		
 		// write out.
 		pw.print(response);
