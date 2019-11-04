@@ -105,7 +105,7 @@ public class GetCardListHandler implements RequestStreamHandler {
 	 		                 "     \"Access-Control-Allow-Origin\" : \"*\", \n" + 
 	 				         "     \"Access-Control-Allow-Method\"  : \"GET,POST,OPTIONS\" \n" + 
 	 		                 "  },\n" +
-	 		                 " \"bodys\" :{ \"cards\" : \n" + 
+	 		                 " \"body\" :{ \"cards\" : \n" + 
 	 		                 a.toString() +
 	 		                 " }\n" +
 	 		                 " }";
