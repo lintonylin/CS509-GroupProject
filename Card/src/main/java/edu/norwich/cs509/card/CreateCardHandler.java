@@ -114,7 +114,7 @@ public class CreateCardHandler implements RequestStreamHandler {
 	 				         "  \"headers\" : { \n " +
 	 		                 "     \"Access-Control-Allow-Origin\" : \"*\", \n" + 
 	 				         "     \"Access-Control-Allow-Method\"  : \"GET,POST,OPTIONS\" \n" + 
-	 		                 "  }, \n";
+	 		                 "  } \n}";
 	 		
 		// write out.
 		pw.print(response);
