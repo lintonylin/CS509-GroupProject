@@ -6,13 +6,7 @@
   </head>
   <body>
     <h1> Welcome to Card Make Simulator </h1>
-
-    <h3> Here is the Existing Card List </h3>
-
-    <ul id="CardList">
-      <li>EventType:Birthday To: test1</li>
-    </ul>
-    <h3> Alternating Form </h3>
+    <h3> All Cards List </h3>
     <table id="CardList_table">
       <tr>
 
@@ -26,9 +20,26 @@
         <th> Test1  </th>
         <th> Birthday </th>
         <th> Portrait </th>
-        <th> <a href="https://www.google.com">Edit</a></th>
+        <th> <a href="https://www.google.com">Edit</a><a href="https://www.baidu.com">Delete</a></th>
 
     </table>
-
+    <h3>Create Card Form</h3>
+    <form id="CreateForm">
+      <select name = "EventType">
+        <option value ="Birthday">Birthday</option>
+        <option value ="Anniversy">Anniversy</option>
+        <!-- <option value ="Birthday">Birthday</option>
+        <option value ="Birthday">Birthday</option>
+        <option value ="Birthday">Birthday</option>
+        <option value ="Birthday">Birthday</option>
+        <option value ="Birthday">Birthday</option> -->
+      </select></br>
+      <input name="Recipient" type = "text" placeholder="Enter Recipient Here"></input></br>
+      <select name = "LandScape">
+        <option value = "Protrait">Protrait</option>
+        <option value = "LandScape">LandScape</option>
+      </select></br>
+      <input type ="submit" value="Create Card"> </button>
+    </form>
   </body>
 </html>
