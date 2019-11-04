@@ -98,6 +98,16 @@ public class GetCardListHandler implements RequestStreamHandler {
 		
 		// Needed for CORS integration...
 		logger.log(a.toString());
+		
+		JSONObject headerJson = new JSONObject();
+		headerJson.put("Content-Type",  "application/json");  // not sure if needed anymore?
+		headerJson.put("Access-Control-Allow-Methods", "GET,POST,DELETE,OPTIONS");
+		headerJson.put("Access-Control-Allow-Origin",  "*");
+		
+		JSONObject responseJson = new JSONObject();
+		responseJson.put("headers", headerJson);
+		responseJson.put("statusCode", statusCode);
+		responseJson.put("body",a.toJSONString());
 		String response = "{ \n" + 
 	 				         "  \"isBase64Encoded\" : false, \n" +
 	 				         "  \"statusCode\"      : " + statusCode + ", \n" +
@@ -110,7 +120,7 @@ public class GetCardListHandler implements RequestStreamHandler {
 	 		                 " }\"\n" +
 	 		                 " }";
 		// write out.
-		pw.print(response);
+		pw.print(responseJson.toJSONString());
 		pw.close();
 	  }
 }
