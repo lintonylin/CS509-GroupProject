@@ -25,7 +25,7 @@ public class CreateCardDB {
             ResultSet resultSet = ps.executeQuery();
             
             // card already exists
-            if (resultSet.wasNull()) {
+            if (resultSet.next()) {
                 resultSet.close();
                 return false;
             }

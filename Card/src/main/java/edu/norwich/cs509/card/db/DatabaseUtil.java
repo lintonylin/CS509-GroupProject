@@ -28,7 +28,7 @@ public class DatabaseUtil {
 		
 		try {
 			//System.out.println("start connecting......");
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(
 					jdbcTag + rdsMySqlDatabaseUrl + ":" + rdsMySqlDatabasePort + "/" + dbName + multiQueries,
 					dbUsername,
