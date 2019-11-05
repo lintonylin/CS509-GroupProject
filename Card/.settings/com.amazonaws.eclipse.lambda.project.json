@@ -1,1 +1,0 @@
-{"lastDeploymentHandler":"edu.norwich.cs509.card.CreateCardHandler","lastInvokeHandler":null,"handlerMetadata":{"edu.norwich.cs509.card.CreateCardHandler":{"deployment":{"regionId":"us-east-1","awsLambdaFunctionName":"createCard","awsIamRoleName":"developer","awsS3BucketName":"cs509norwichfans","memory":0,"timeout":0},"invoke":null}},"lastInvokedHandlerDeployed":false}
