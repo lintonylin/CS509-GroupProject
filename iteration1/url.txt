@@ -1,0 +1,1 @@
+https://cs509norwichfans.s3-external-1.amazonaws.com/presentation/CMS_Main.html?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20191105T061243Z&X-Amz-SignedHeaders=host&X-Amz-Expires=604798&X-Amz-Credential=AKIAY3T6JLISXVEALQKQ%2F20191105%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=6f215f8ff8b8ba1d5d2bcd217d1e344a211d4655c08df2b9436a299b84b14b88
