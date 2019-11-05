@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+ 	<script type='text/javascript' src='../js/api.js'></script>
+	<script type='text/javascript' src='../js/create_card.js'></script>
+	<script type='text/javascript' src='../js/delete_card.js'></script>
+	<script type='text/javascript' src='../js/get_cardlist.js'></script>
+	
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body onload="refreshCardList()">
+    <h1> Welcome to Card Make Simulator </h1>
+    <h3> All Cards List </h3>
+    <table id ="CardListTable">
+      <tr>
+      	<th> EventType </th>
+        <th> Recipient </th>
+        <th> LandScape </th>
+        <th> Operation </th>
+      </tr>
+      <tr>
+		<td>Birthday</td>
+        <td>Test1</td>
+        <td>Portrait</td>
+        <td> <a href="https://www.google.com">Edit</a><button onClick="JavaScript:handleDeleteCardClick(1)">Delete</button></td>
+
+    </table>
+    <h3>Create Card Form</h3>
+    <form name="createForm">
+      <select name = "EventType">
+        <option value ="Birthday">Birthday</option>
+        <option value ="Anniversary">Anniversary</option>
+        <option value ="Back to School">Back to School</option>
+        <option value ="Baptism and Christening">Baptism and Christening</option>
+        <option value ="Baby">Baby</option>
+        <option value ="Bar/Bat Mitzvah">Bar/Bat Mitzvah</option>
+        <option value ="Confirmation">Confirmation</option>
+        <option value ="Congratulations">Congratulations</option>
+        <option value ="Encouragement">Encouragement</option>
+        <option value ="First Communion">First Communion</option>
+        <option value ="Get Well">Get Well</option>
+        <option value ="Graduation">Graduation</option>
+        <option value ="Retirement">Retirement</option>
+        <option value ="Sympathy">Sympathy</option>
+        <option value ="Teacher Appreciation">Teacher Appreciation</option>
+        <option value ="Thank You">Thank You</option>
+        <option value ="Wedding">Wedding</option>
+      </select><br>
+      <input name="Recipient" type = "text" placeholder="Enter Recipient Here"></input><br>
+      <select name = "Orientation">
+        <option value = "Portrait">Portrait</option>
+        <option value = "LandScape">LandScape</option>
+      </select><br>
+      <input type ="button" value="Create Card" onClick="JavaScript:handleCreateCardClick(this)"/>
+    </form>
+  </body>
+</html>
