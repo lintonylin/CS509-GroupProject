@@ -16,6 +16,7 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.amazonaws.util.json.Jackson;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import edu.norwich.cs509.card.db.AddTextDB;
 import edu.norwich.cs509.card.db.CreateCardDB;
 
 public class CreateCardHandler implements RequestStreamHandler {
@@ -28,8 +29,13 @@ public class CreateCardHandler implements RequestStreamHandler {
 		
 		// check if present
 		if (ccd.addCard(eventtype, recipient, orientation)){
-			return true;
-			
+			AddTextDB atd = new AddTextDB();
+			if (atd.addText(eventtype, recipient, orientation, 300, 300, 10, 10, "NorwichFans", 3, "Comic Sans MS")){
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 		else {
 			return false;
