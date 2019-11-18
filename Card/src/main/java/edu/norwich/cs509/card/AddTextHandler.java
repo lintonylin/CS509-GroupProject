@@ -171,10 +171,9 @@ public class AddTextHandler implements RequestStreamHandler {
 					statusCode = 409;
 				}
 			} catch (Exception e) {
-				logger.log("Unable to create card -- eventtype:" + eventtype + "  recipient:" + recipient + "  orientation:" + orientation + " e:" + e.getMessage());
+				logger.log("Unable to add text, " + " e:" + e.getMessage());
 				statusCode = 400;
 			}
-			//if card exists, return 409;
 			
 	    	//statusCode = 200;
 		}
