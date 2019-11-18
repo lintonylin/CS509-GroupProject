@@ -29,6 +29,11 @@ public class DeleteCardDB {
                 return false;
             }
 
+            ps = conn.prepareStatement("DELETE FROM innodb.TextElements where eventtype =? and recipient = ?;");
+            ps.setString(1,  eventtype);
+            ps.setString(2,  recipient);
+            ps.execute();
+            
             ps = conn.prepareStatement("DELETE FROM innodb.Cards where eventtype =? and recipient = ?;");
             ps.setString(1,  eventtype);
             ps.setString(2,  recipient);

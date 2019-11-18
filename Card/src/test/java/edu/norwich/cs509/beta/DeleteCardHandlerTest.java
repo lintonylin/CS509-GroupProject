@@ -25,7 +25,7 @@ public class DeleteCardHandlerTest extends LambdaTest{
         handler.handleRequest(input, output, createContext("compute"));
 
         JsonNode outputNode = Jackson.fromJsonString(output.toString(), JsonNode.class);
-        JsonNode body = Jackson.fromJsonString(outputNode.get("body").asText(), JsonNode.class);
+        //JsonNode body = Jackson.fromJsonString(outputNode.get("body").asText(), JsonNode.class);
         //Assert.assertEquals(outgoing, body.get("result").asText());
         Assert.assertEquals("200", outputNode.get("statusCode").asText());
     }
@@ -45,7 +45,7 @@ public class DeleteCardHandlerTest extends LambdaTest{
     
     @Test
     public void testCardSimple() {
-    	String SAMPLE_INPUT_STRING = "{\"eventtype\": \"birthday\", \"recipient\": \"Mary.H\"}";
+    	String SAMPLE_INPUT_STRING = "{\"eventtype\": \"Birthday\", \"recipient\": \"Mary H.\"}";
         
         try {
         	testInput(SAMPLE_INPUT_STRING);

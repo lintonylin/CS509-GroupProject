@@ -29,6 +29,7 @@ public class CreateCardHandler implements RequestStreamHandler {
 		// check if present
 		if (ccd.addCard(eventtype, recipient, orientation)){
 			return true;
+			
 		}
 		else {
 			return false;

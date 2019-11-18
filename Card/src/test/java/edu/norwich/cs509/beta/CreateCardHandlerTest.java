@@ -47,7 +47,7 @@ public class CreateCardHandlerTest extends LambdaTest {
     
     @Test
     public void testCardSimple() {
-    	String SAMPLE_INPUT_STRING = "{\"eventtype\": \"birthday\", \"recipient\": \"Mary.H\", \"orientation\": \"landscape\"}";
+    	String SAMPLE_INPUT_STRING = "{\"eventtype\": \"Birthday\", \"recipient\": \"Mary H.\", \"orientation\": \"landscape\"}";
         
         try {
         	testInput(SAMPLE_INPUT_STRING);
