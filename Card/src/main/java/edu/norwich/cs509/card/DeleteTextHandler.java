@@ -16,26 +16,20 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.amazonaws.util.json.Jackson;
 import com.fasterxml.jackson.databind.JsonNode;
 
-import edu.norwich.cs509.card.db.AddTextDB;
 import edu.norwich.cs509.card.db.CreateCardDB;
+import edu.norwich.cs509.card.db.DeleteTextDB;
 
-public class CreateCardHandler implements RequestStreamHandler {
+public class DeleteTextHandler implements RequestStreamHandler {
 
 	LambdaLogger logger;
 	
-	boolean createCard(String eventtype, String recipient, String orientation) throws Exception {
-		if (logger != null) { logger.log("in createCard"); }
-		CreateCardDB ccd = new CreateCardDB();
+	boolean deleteText(int text_id) throws Exception {
+		if (logger != null) { logger.log("in deleteText"); }
+		DeleteTextDB dtd = new DeleteTextDB();
 		
 		// check if present
-		if (ccd.addCard(eventtype, recipient, orientation)){
-			AddTextDB atd = new AddTextDB();
-			if (atd.addText(eventtype, recipient, orientation, 300, 300, 10, 10, "NorwichFans", 3, "Comic Sans MS")){
-				return true;
-			}
-			else {
-				return false;
-			}
+		if (dtd.deleteText(text_id)){
+			return true;
 		}
 		else {
 			return false;
@@ -62,34 +56,18 @@ public class CreateCardHandler implements RequestStreamHandler {
         	node = Jackson.fromJsonString(node.get("body").asText(), JsonNode.class);
         }
         
-    	String eventtype = "", recipient = "", orientation = "";
+    	int text_id = 0;
     	
-    	String param = node.get("eventtype").asText();
+    	int param = Integer.parseInt(node.get("eid").asText());
     	boolean error = false;
     	
-    	eventtype = param;
+    	text_id = param;
     	// length==0 or not in preset eventtypes
     	//TODO
-    	if (eventtype.length() == 0) {
-    		if (logger != null) {logger.log("Unable to parse:" + param + " as eventtype"); }
+    	if (text_id < 0) {
+    		if (logger != null) {logger.log("Unable to parse:" + param + " as text_id"); }
     		error = true;
     	}
-    	
-    	param = node.get("recipient").asText();
-    	recipient = param;
-		if (recipient.length() == 0) {
-    		if (logger != null) {logger.log("Unable to parse:" + param + " as recipient"); }
-    		error = true;
-    	}
-		
-		param = node.get("orientation").asText();
-    	orientation = param;
-    	// length==0 or not in preset orientation
-    	//TODO
-		if (orientation.length() == 0) {
-    		if (logger != null) {logger.log("Unable to parse:" + param + " as orientation"); }
-    		error = true;
-    	}  
 	    
 	    PrintWriter pw = new PrintWriter(output);
 	    
@@ -99,17 +77,16 @@ public class CreateCardHandler implements RequestStreamHandler {
 		} else {
 	    	//create card, return 200;
 			try {
-				if (createCard(eventtype, recipient, orientation)) {
+				if (deleteText(text_id)) {
 					statusCode = 200;
 				}
 				else {
 					statusCode = 409;
 				}
 			} catch (Exception e) {
-				logger.log("Unable to create card -- eventtype:" + eventtype + "  recipient:" + recipient + "  orientation:" + orientation + " e:" + e.getMessage());
+				logger.log("Unable to delete text, " + " e:" + e.getMessage());
 				statusCode = 400;
 			}
-			//if card exists, return 409;
 			
 	    	//statusCode = 200;
 		}

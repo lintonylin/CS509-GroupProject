@@ -13,11 +13,15 @@ import com.amazonaws.util.json.Jackson;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import edu.norwich.cs509.card.CreateCardHandler;
-import edu.norwich.cs509.card.DeleteCardHandler;
+import edu.norwich.cs509.card.DeleteTextHandler;
 
-public class DeleteCardHandlerTest extends LambdaTest{
-	void testInput(String incoming) throws IOException {
-    	DeleteCardHandler handler = new DeleteCardHandler();
+/**
+ * A simple test harness for locally invoking your Lambda function handler.
+ */
+public class DeleteTextHandlerTest extends LambdaTest {
+
+    void testInput(String incoming) throws IOException {
+    	DeleteTextHandler handler = new DeleteTextHandler();
 
         InputStream input = new ByteArrayInputStream(incoming.getBytes());
         OutputStream output = new ByteArrayOutputStream();
@@ -25,13 +29,12 @@ public class DeleteCardHandlerTest extends LambdaTest{
         handler.handleRequest(input, output, createContext("compute"));
 
         JsonNode outputNode = Jackson.fromJsonString(output.toString(), JsonNode.class);
-        //JsonNode body = Jackson.fromJsonString(outputNode.get("body").asText(), JsonNode.class);
         //Assert.assertEquals(outgoing, body.get("result").asText());
         Assert.assertEquals("200", outputNode.get("statusCode").asText());
     }
 	
     void testFailInput(String incoming, String outgoing) throws IOException {
-    	DeleteCardHandler handler = new DeleteCardHandler();
+    	CreateCardHandler handler = new CreateCardHandler();
 
         InputStream input = new ByteArrayInputStream(incoming.getBytes());
         OutputStream output = new ByteArrayOutputStream();
@@ -45,7 +48,7 @@ public class DeleteCardHandlerTest extends LambdaTest{
     
     @Test
     public void testCardSimple() {
-    	String SAMPLE_INPUT_STRING = "{\"eventtype\": \"Birthday\", \"recipient\": \"Mary H.\"}";
+    	String SAMPLE_INPUT_STRING = "{  \"card\": {    \"eventtype\": \"string\",    \"recipient\": \"string\",    \"orientation\": \"string\"  },  \"eid\": 3}";
         
         try {
         	testInput(SAMPLE_INPUT_STRING);
