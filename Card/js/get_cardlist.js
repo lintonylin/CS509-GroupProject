@@ -45,16 +45,23 @@ function processCardListResponse(result) {
 	  var delenode = rownode.insertCell();
 	  var btn = document.createElement("BUTTON");
 	  btn.innerHTML ="Delete";
+	  var btn2 = document.createElement("BUTTON");
+	  btn2.innerHTML = "Edit";
+	  
 
 	  const y = i;
 	  console.log(y);
 	  btn.onclick = function(){
 		  handleDeleteCardClick(y+1);
-	  }
+	  };
+	  btn2.onclick = function(){
+		  handleEditCardClick(y+1);
+	  };
 	  eventnode.innerHTML = js[i]['eventtype'];
 	  recinode.innerHTML = js[i]['recipient'];
 	  orinode.innerHTML = js[i]['orientation'];
 	  delenode.append(btn);
+	  delenode.append(btn2);
   }
 
 }
