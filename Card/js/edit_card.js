@@ -24,10 +24,11 @@ function handleEditCardClick(k) {
   var EventType = table.rows[k].cells[0].innerHTML;
   console.log(EventType);
   var Recipient = table.rows[k].cells[1].innerHTML;
+  var Orientation = table.rows[k].cells[2].innerHTML;
   
   var url = "./EditCard.html" ;
   console.log(url);
-  url = url + "?"+ EventType + "+" +Recipient; 
+  url = url + "?"+ EventType + "+" +Recipient+ "+" + Orientation; 
   console.log(url);
   window.location.href = url;
 }

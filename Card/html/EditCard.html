@@ -3,21 +3,58 @@
   <head>
  	<script type='text/javascript' src='../js/api.js'></script>
 	<script type='text/javascript' src='../js/loadCard.js'></script>
-	
+	<script type='text/javascript' src='../js/element_method.js'></script>
     <meta charset="utf-8">
     <title></title>
+     <style>
+        .hide{
+            display: none;
+        }
+     </style>
   </head>
   <body onload="OnCardLoad()">
   	<h1>Here is Card Editor</h1>
 	<h2 id = "head"></h2>
-	<script type="text/javascript">
-	</script>
+	<div id="shade" class="hide"></div>
+	<form id="modal" class="hide">
+		<p id = "method"></p>
+		<p id="Id"></p>
+  	 	<p class = "ne">
+  	 	Page
+  	 	<select id='page'>
+  	 		<option value=0>front</option>
+  	 	</select></p>
+    	<p id='type'>Text</p>
+    	<p class = "text">Font<select id='font' >
+    			<option>font1</option>
+    			<option value="Comic Sans MS">Comic Sans MS</option>
+    			<option>font3</option>
+    			</select>
+    	</p>
+    	<p>Position 
+    	Top <input id= 't' type="number" name="points" min="0" max="900" />  
+    	Left <input id= 'l' type="number" name="points" min="0" max="900" /> 
+    	Width<input id='w' type="number" name="points" min="0" max="900" /> 
+    	Height<input id='h' type="number" name="points" min="0" max="900" />
+ 		</p>
+ 		<p class = 'text'>
+ 		Text <input id='text' type="text"/> 
+ 		</p>
+		<p>
+    		<input id ='update' type="button"  value="Update" onclick="AddTextElement"/>
+    		<input id='add' type="button"  value="Add"/>
+    		<input type="button"  value="Cancel" onclick="Hide();"/>
+    		
+    </form>
+	<button id="addtext" onclick = "addTextElement()">Add Text</button>
+	<br>
 	<select id="elementList" style="width:600px;height:600px;"size= 100>
-		<option value= 100>test1</option>
-		<option value= 100>test1</option>
-		<option value= 100>test1</option>
-		<option value= 100>test1</option>
-		<option value= 100>test1</option>
 	</select>
+	<br>
+	<button id="delete" onclick = "deleteElement()">Delete</button>
+	<button id="edit" onclick = "editElement()">Edit</button>
+	<br>
+	<button style="height:50px;width:100px" onclick="window.history.go(-1);">HomePage</button>
+	
   </body>
 </html>

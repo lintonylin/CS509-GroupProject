@@ -1,19 +1,36 @@
 var EventType ="";
 var Recipient ="";
 var js;
-
+var page0;
+var page1;
+var page2;
+var page3;
+var card={};
 
 function GetCard(){
 	var res = location.search.toString().substr(1).split("+");		
 	EventType = res[0];
 	Recipient = decodeURI(res[1]);
+	Orientation = res[2];
 	var testc = "This is " +EventType + " card for " + Recipient;
+	card["eventtype"] = EventType;
+	card["recipient"] = Recipient;
+	card["orientation"] = Orientation;
 	var head = document.getElementById("head");
 	head.innerHTML = testc;
 }
 
+
+
+
 function refreshElementList(){
-	var select = document.getElementById("elementlist");
+	var select = document.getElementById("elementList");
+	
+	while(select.hasChildNodes()){
+
+		select.removeChild(select.firstChild);
+
+	}
 	console.log(EventType);
 	console.log(Recipient);
 	var data = {};
@@ -31,17 +48,44 @@ function refreshElementList(){
 	    if (xhr.readyState == XMLHttpRequest.DONE) {
 	    	console.log ("XHR:" + xhr.responseText);
 	    	processDisplayCardResponse(xhr.responseText);
+	    	InsertToSelect(select);
 	    } else {
 	    	processDisplayCardResponse("N/A");
 		}
-	};	 
+	};
+	
+	
 }
 
 function processDisplayCardResponse(response) {
 	js = JSON.parse(response);
-	
-	
+	front = JSON.parse(js["page0"]);
+	innerleft = JSON.parse(js["page1"]);
+	innerright = JSON.parse(js["page2"]);
+	back = JSON.parse(js["page3"]);
+
 }
+
+
+function setPage(page,select,pageNo){
+	var i;
+	for(i = 0; i < page.length; i++){
+		var option = document.createElement("option");
+		option.text =  "ID : " + page[i]["text_ID"] + "; Type: Text;" + " On Page:" + pageNo;
+		option.value = JSON.stringify(page[i]);
+		console.log(option.value);
+		select.add(option);
+	}
+}
+
+function InsertToSelect(select){
+	setPage(front,select,0);
+	setPage(innerleft,select,1);
+	setPage(innerright,select,2);
+	setPage(back,select,3);
+}
+
+
 
 
 function OnCardLoad(){
