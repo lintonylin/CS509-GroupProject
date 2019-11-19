@@ -2,10 +2,10 @@ var EventType ="";
 var Recipient ="";
 var Orientation;
 var js;
-var page0;
-var page1;
-var page2;
-var page3;
+var front;
+var innerleft;
+var innerright;
+var back;
 var card={};
 
 function GetCard(){
