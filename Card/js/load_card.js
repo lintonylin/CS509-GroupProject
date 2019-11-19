@@ -92,3 +92,9 @@ function OnCardLoad(){
 	GetCard();
 	refreshElementList();
 }
+
+function handleShowCardClick(){
+	var url = "./ShowCard.html"
+	url +=  location.search.toString();
+	window.location.href = url;
+}

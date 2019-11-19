@@ -62,7 +62,7 @@ function Hide(){
     for(i = 0; i < noneditable.length; i++) {
     	noneditable[i].classList.remove('hide');
      }
-	
+	document.getElementById('modal').reset();
 	document.getElementById('shade').classList.add('hide');
     document.getElementById('modal').classList.add('hide');
     document.getElementById('addtext').classList.remove('hide');
