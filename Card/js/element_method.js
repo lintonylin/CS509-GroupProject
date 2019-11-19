@@ -103,6 +103,9 @@ function setForm(n){
 	    document.getElementById('text').setAttribute('value',info.text);
 	    document.getElementById('add').disabled = true;
 	    document.getElementById('font').value = info.font;
+	    document.getElementById('update').onclick = function(){
+	    	editElementRequest();
+		};
 	    
 	}
 }
@@ -153,4 +156,36 @@ function deleteElementRequest(id){
 	    	
 	    }
 	  };
+}
+
+function editElementRequest(){
+	var data={};
+	var data={};
+	var element={};
+	element["card"]= card;
+	element["eid"] = parseInt(document.getElementById('Id').value);
+	var position={};
+	position['top'] = parseInt(document.getElementById('t').value);
+//	TODO: Modify variable name 'left';
+	position['left'] = parseInt(document.getElementById('l').value);
+	position['height'] = parseInt(document.getElementById('h').value);
+	position['width'] = parseInt(document.getElementById('w').value);
+	data["element"] = element;
+	data["position"] = position;
+	data["font"] = document.getElementById('font').value;
+	data["text"] = document.getElementById('text').value;
+	
+	var xhr = new XMLHttpRequest();
+	xhr.open("post", editelement_url, true);
+	xhr.send(js);
+	xhr.onloadend = function () {
+		    if (xhr.readyState == XMLHttpRequest.DONE) {
+		      console.log ("XHR:" + xhr.responseText);
+		      Hide();
+		      refreshElementList();
+		    } else {
+		    	
+		    }
+		  };
+	
 }

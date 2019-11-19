@@ -9,3 +9,4 @@ var elementlist_url = base_url +"elementList";
 var displaycard_url = base_url + "displayCard";
 var addtextelement_url = base_url + "addTextItem";
 var deleteelement_url = base_url + "deleteVisualElement";
+var editelement_url = base_url + "editTextElement";
