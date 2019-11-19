@@ -1,5 +1,6 @@
 var EventType ="";
 var Recipient ="";
+var Orientation;
 var js;
 var page0;
 var page1;
