@@ -10,7 +10,7 @@ var card={};
 
 function GetCard(){
 	var res = location.search.toString().substr(1).split("+");		
-	EventType = res[0];
+	EventType = decodeURI(res[0]);
 	Recipient = decodeURI(res[1]);
 	Orientation = res[2];
 	var testc = "This is " +EventType + " card for " + Recipient;
