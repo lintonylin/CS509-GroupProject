@@ -16,7 +16,8 @@ public class DatabaseUtil {
 	public final static String multiQueries = "?allowMultiQueries=true";
 	   
 	public final static String dbName = "innodb";    // default created from MySQL WorkBench
-
+	public final static String testingName = "tmp";  // used for testing (also default created)
+	
 	// pooled across all usages.
 	static Connection conn;
  
@@ -26,11 +27,19 @@ public class DatabaseUtil {
 	protected static Connection connect() throws Exception {
 		if (conn != null) { return conn; }
 		
+		boolean useTestDB = System.getenv("TESTING") != null;
+		
+		String schemaName = dbName;
+		if(useTestDB) {
+			schemaName = testingName;
+			System.out.println("USE TEST DB:" + useTestDB);
+		}
+		
 		try {
 			//System.out.println("start connecting......");
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(
-					jdbcTag + rdsMySqlDatabaseUrl + ":" + rdsMySqlDatabasePort + "/" + dbName + multiQueries,
+					jdbcTag + rdsMySqlDatabaseUrl + ":" + rdsMySqlDatabasePort + "/" + schemaName + multiQueries,
 					dbUsername,
 					dbPassword);
 			//System.out.println("Database has been connected successfully.");
