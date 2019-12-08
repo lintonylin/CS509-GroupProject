@@ -19,7 +19,7 @@ public class DeleteTextDB {
     
     public boolean deleteText(int text_id) throws Exception {
         try {
-            PreparedStatement ps = conn.prepareStatement("DELETE FROM innodb.TextElements WHERE text_ID = ?;");
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM TextElements WHERE text_ID = ?;");
             ps.setInt(1, text_id);
             
             ps.execute();

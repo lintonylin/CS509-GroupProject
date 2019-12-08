@@ -6,27 +6,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 
-public class GetCardListDB {
+public class DeleteImageDB {
 	java.sql.Connection conn;
-	ResultSet resultSet;
 
-    public GetCardListDB() {
+    public DeleteImageDB() {
     	try  {
     		conn = DatabaseUtil.connect();
-    		resultSet = null;
     	} catch (Exception e) {
     		conn = null;
-    		resultSet = null;
     	}
     }
     
-    public boolean getCards() throws Exception {
+    public boolean deleteImage(int image_id) throws Exception {
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Cards;");
-            resultSet = ps.executeQuery();
-            if(!resultSet.next()) {
-            	return false;
-            }
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM ImageElements WHERE image_ID = ?;");
+            ps.setInt(1, image_id);
+            
+            ps.execute();
             return true;
 
         } catch (Exception e) {
@@ -34,9 +30,5 @@ public class GetCardListDB {
         	e.printStackTrace(new PrintWriter(stringWriter));
             throw new Exception("Failed to insert card: " + stringWriter.toString());
         }
-    }
-    
-    public ResultSet getResultSet() {
-    	return resultSet;
     }
 }

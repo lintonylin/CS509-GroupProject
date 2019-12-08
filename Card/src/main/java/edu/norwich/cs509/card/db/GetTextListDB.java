@@ -22,7 +22,7 @@ public class GetTextListDB {
     
     public boolean getTexts(String eventtype, String recipient, int page) throws Exception {
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM innodb.TextElements WHERE eventtype = ? AND recipient = ? AND page = ?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM TextElements WHERE eventtype = ? AND recipient = ? AND page = ?;");
             ps.setString(1, eventtype);  // the card eventtype
             ps.setString(2, recipient);   // the card recipient
             ps.setInt(3, page);      // the card page

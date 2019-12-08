@@ -18,7 +18,7 @@ public class DeleteCardDB {
     
     public boolean deleteCard(String eventtype, String recipient) throws Exception {
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM innodb.Cards WHERE eventtype = ? and recipient = ?;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Cards WHERE eventtype = ? and recipient = ?;");
             ps.setString(1, eventtype);
             ps.setString(2, recipient);
             ResultSet resultSet = ps.executeQuery();
@@ -29,12 +29,17 @@ public class DeleteCardDB {
                 return false;
             }
 
-            ps = conn.prepareStatement("DELETE FROM innodb.TextElements where eventtype =? and recipient = ?;");
+            ps = conn.prepareStatement("DELETE FROM TextElements where eventtype =? and recipient = ?;");
             ps.setString(1,  eventtype);
             ps.setString(2,  recipient);
             ps.execute();
             
-            ps = conn.prepareStatement("DELETE FROM innodb.Cards where eventtype =? and recipient = ?;");
+            ps = conn.prepareStatement("DELETE FROM ImageElements where eventtype =? and recipient = ?;");
+            ps.setString(1,  eventtype);
+            ps.setString(2,  recipient);
+            ps.execute();
+            
+            ps = conn.prepareStatement("DELETE FROM Cards where eventtype =? and recipient = ?;");
             ps.setString(1,  eventtype);
             ps.setString(2,  recipient);
             ps.execute();

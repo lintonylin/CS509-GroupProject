@@ -6,11 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 
-public class GetCardListDB {
+public class GetImageListDB {
 	java.sql.Connection conn;
 	ResultSet resultSet;
 
-    public GetCardListDB() {
+    public GetImageListDB() {
     	try  {
     		conn = DatabaseUtil.connect();
     		resultSet = null;
@@ -20,9 +20,13 @@ public class GetCardListDB {
     	}
     }
     
-    public boolean getCards() throws Exception {
+    public boolean getImages(String eventtype, String recipient, int page) throws Exception {
         try {
-            PreparedStatement ps = conn.prepareStatement("SELECT * FROM Cards;");
+            PreparedStatement ps = conn.prepareStatement("SELECT * FROM ImageElements WHERE eventtype = ? AND recipient = ? AND page = ?;");
+            ps.setString(1, eventtype);  // the card eventtype
+            ps.setString(2, recipient);   // the card recipient
+            ps.setInt(3, page);      // the card page
+
             resultSet = ps.executeQuery();
             if(!resultSet.next()) {
             	return false;
@@ -32,7 +36,7 @@ public class GetCardListDB {
         } catch (Exception e) {
         	StringWriter stringWriter = new StringWriter();
         	e.printStackTrace(new PrintWriter(stringWriter));
-            throw new Exception("Failed to insert card: " + stringWriter.toString());
+            throw new Exception("Failed to get image: " + stringWriter.toString());
         }
     }
     
