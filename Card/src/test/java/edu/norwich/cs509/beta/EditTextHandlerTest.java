@@ -35,7 +35,7 @@ public class EditTextHandlerTest extends LambdaTest {
         Assert.assertEquals("200", outputNode.get("statusCode").asText());
     }
 	
-    void testFailInput(String incoming, String outgoing) throws IOException {
+    /*void testFailInput(String incoming, String outgoing) throws IOException {
     	CreateCardHandler handler = new CreateCardHandler();
 
         InputStream input = new ByteArrayInputStream(incoming.getBytes());
@@ -45,12 +45,12 @@ public class EditTextHandlerTest extends LambdaTest {
 
         JsonNode outputNode = Jackson.fromJsonString(output.toString(), JsonNode.class);
         Assert.assertEquals("400", outputNode.get("statusCode").asText());
-    }
+    }*/
 	
     
     @Test
     public void testCardSimple() {
-    	String SAMPLE_INPUT_STRING = "{\"card\": {    \"eventtype\": \"Birthday\",    \"recipient\": \"Mary H.\",\"orientation\": \"Landscape\"  },  \"position\": {    \"left\": 1,    \"top\": 2,    \"width\": 3,    \"height\": 4  },  \"text\": \"Happy Birthday\",  \"eid\": 28,  \"font\": \"Comic Sans MS\"}";
+    	String SAMPLE_INPUT_STRING = "{\"card\": {    \"eventtype\": \"Birthday\",    \"recipient\": \"Mary H.\",\"orientation\": \"Landscape\"  },  \"position\": {    \"left\": 1,    \"top\": 2,    \"width\": 3,    \"height\": 4  },  \"text\": \"Happy Birthday\",  \"eid\": 27,  \"font\": \"Comic Sans MS\"}";
 
         try {
         	testInput(SAMPLE_INPUT_STRING);

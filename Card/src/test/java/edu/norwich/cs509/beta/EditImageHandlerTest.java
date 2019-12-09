@@ -36,7 +36,7 @@ public class EditImageHandlerTest extends LambdaTest {
         Assert.assertEquals("200", outputNode.get("statusCode").asText());
     }
 	
-    void testFailInput(String incoming, String outgoing) throws IOException {
+    /*void testFailInput(String incoming, String outgoing) throws IOException {
     	CreateCardHandler handler = new CreateCardHandler();
 
         InputStream input = new ByteArrayInputStream(incoming.getBytes());
@@ -46,12 +46,12 @@ public class EditImageHandlerTest extends LambdaTest {
 
         JsonNode outputNode = Jackson.fromJsonString(output.toString(), JsonNode.class);
         Assert.assertEquals("400", outputNode.get("statusCode").asText());
-    }
+    }*/
 	
     
     @Test
     public void testCardSimple() {
-    	String SAMPLE_INPUT_STRING = "{\"card\": {    \"eventtype\": \"Birthday\",    \"recipient\": \"Mary H.\",\"orientation\": \"Landscape\"  },  \"position\": {    \"left\": 100,    \"top\": 200,    \"width\": 300,    \"height\": 400  },  \"eid\": 3}";
+    	String SAMPLE_INPUT_STRING = "{\"card\": {    \"eventtype\": \"Birthday\",    \"recipient\": \"Mary H.\",\"orientation\": \"Landscape\"  },  \"position\": {    \"left\": 100,    \"top\": 200,    \"width\": 300,    \"height\": 400  },  \"eid\": 1}";
 
         try {
         	testInput(SAMPLE_INPUT_STRING);

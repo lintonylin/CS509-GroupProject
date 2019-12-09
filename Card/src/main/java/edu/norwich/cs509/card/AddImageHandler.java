@@ -1,7 +1,6 @@
 package edu.norwich.cs509.card;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,10 +10,6 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.ArrayList;
-import java.util.HashMap;
-
-import org.json.simple.JSONObject;
-
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
@@ -24,14 +19,11 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.PutObjectResult;
 import com.amazonaws.util.json.Jackson;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.codec.binary.Base64;
 
 import edu.norwich.cs509.card.db.AddImageDB;
-import edu.norwich.cs509.card.db.AddTextDB;
-import edu.norwich.cs509.card.db.CreateCardDB;
 
 public class AddImageHandler implements RequestStreamHandler {
 
@@ -73,7 +65,7 @@ public class AddImageHandler implements RequestStreamHandler {
 			return false;
 		}
 		
-		ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decodeBase64(image));
+		//ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decodeBase64(image));
 		ObjectMetadata omd = new ObjectMetadata();
 		omd.setContentLength(Base64.decodeBase64(image).length);
 		//omd.setContentType(imagetype);
@@ -166,7 +158,7 @@ public class AddImageHandler implements RequestStreamHandler {
 	    	position = node.get("position");
         }
 	    
-    	String eventtype = "", recipient = "", orientation = "", image = "", font = "";
+    	String eventtype = "", recipient = "", orientation = "", image = "";
     	int page = 0;
     	int image_id = 0;
     	

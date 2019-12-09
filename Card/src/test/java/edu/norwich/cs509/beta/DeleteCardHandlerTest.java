@@ -30,7 +30,7 @@ public class DeleteCardHandlerTest extends LambdaTest{
         Assert.assertEquals("200", outputNode.get("statusCode").asText());
     }
 	
-    void testFailInput(String incoming, String outgoing) throws IOException {
+    /*void testFailInput(String incoming, String outgoing) throws IOException {
     	DeleteCardHandler handler = new DeleteCardHandler();
 
         InputStream input = new ByteArrayInputStream(incoming.getBytes());
@@ -40,12 +40,12 @@ public class DeleteCardHandlerTest extends LambdaTest{
 
         JsonNode outputNode = Jackson.fromJsonString(output.toString(), JsonNode.class);
         Assert.assertEquals("400", outputNode.get("statusCode").asText());
-    }
+    }*/
 	
     
     @Test
     public void testCardSimple() {
-    	String SAMPLE_INPUT_STRING = "{\"eventtype\": \"Birthday\", \"recipient\": \"Mary H.\"}";
+    	String SAMPLE_INPUT_STRING = "{\"eventtype\": \"Birthday\", \"recipient\": \"Paul\"}";
         
         try {
         	testInput(SAMPLE_INPUT_STRING);

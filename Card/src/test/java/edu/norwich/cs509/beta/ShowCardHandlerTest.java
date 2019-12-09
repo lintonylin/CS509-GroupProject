@@ -31,13 +31,13 @@ public class ShowCardHandlerTest extends LambdaTest {
         
         JsonNode outputNode = Jackson.fromJsonString(output.toString(), JsonNode.class);       
         JsonNode body = Jackson.fromJsonString(outputNode.get("body").asText(), JsonNode.class);
-        JsonNode page1 = Jackson.fromJsonString(body.get("page1").asText(), JsonNode.class);
-        System.out.println(page1);
+        JsonNode page0 = Jackson.fromJsonString(body.get("page0").asText(), JsonNode.class);
+        System.out.println(page0);
         //Assert.assertEquals(outgoing, body.get("result").asText());
         Assert.assertEquals("200", outputNode.get("statusCode").asText());
     }
 	
-    void testFailInput(String incoming, String outgoing) throws IOException {
+    /*void testFailInput(String incoming, String outgoing) throws IOException {
     	CreateCardHandler handler = new CreateCardHandler();
 
         InputStream input = new ByteArrayInputStream(incoming.getBytes());
@@ -47,7 +47,7 @@ public class ShowCardHandlerTest extends LambdaTest {
 
         JsonNode outputNode = Jackson.fromJsonString(output.toString(), JsonNode.class);
         Assert.assertEquals("400", outputNode.get("statusCode").asText());
-    }
+    }*/
 	
     
     @Test

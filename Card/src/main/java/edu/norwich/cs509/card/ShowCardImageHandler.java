@@ -143,24 +143,6 @@ public class ShowCardImageHandler implements RequestStreamHandler {
 					        page2.add(jsonObj); 
 					    }
 				 }
-				if (getCardList(eventtype, recipient, 3)) {
-						    ResultSetMetaData metaData = rs.getMetaData();
-						    int columnCount = metaData.getColumnCount();
-						    int flag =0;
-						    while (flag==0) {
-						    	JSONObject jsonObj = new JSONObject();
-						    	for (int i = 1; i <= columnCount; i++) {
-						    		String columnName =metaData.getColumnLabel(i);
-						    		String value = rs.getString(columnName);
-						    		jsonObj.put(columnName, value);
-						    		logger.log(jsonObj.toJSONString());
-						        } 
-						    	if(!rs.next()) {
-						    		flag =-1;
-						    	}
-						        page3.add(jsonObj); 
-						    }
-				}
 				statusCode = 200;
 			} catch (Exception e) {
 				statusCode = 400;
@@ -177,7 +159,6 @@ public class ShowCardImageHandler implements RequestStreamHandler {
 		text_pages.put("page0", page0.toJSONString());
 		text_pages.put("page1", page1.toJSONString());
 		text_pages.put("page2", page2.toJSONString());
-		text_pages.put("page3", page3.toJSONString());
 		
 		JSONObject headerJson = new JSONObject();
 		headerJson.put("Content-Type",  "application/json");  // not sure if needed anymore?

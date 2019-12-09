@@ -34,7 +34,7 @@ public class GetCardListHandlerTest extends LambdaTest {
         Assert.assertEquals("200", outputNode.get("statusCode").asText());
     }
 	
-    void testFailInput(String incoming, String outgoing) throws IOException {
+    /*void testFailInput(String incoming, String outgoing) throws IOException {
     	CreateCardHandler handler = new CreateCardHandler();
 
         InputStream input = new ByteArrayInputStream(incoming.getBytes());
@@ -44,7 +44,7 @@ public class GetCardListHandlerTest extends LambdaTest {
 
         JsonNode outputNode = Jackson.fromJsonString(output.toString(), JsonNode.class);
         Assert.assertEquals("400", outputNode.get("statusCode").asText());
-    }
+    }*/
 	
     
     @Test
