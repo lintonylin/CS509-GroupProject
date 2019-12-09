@@ -17,6 +17,7 @@ import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 import com.amazonaws.util.json.Jackson;
 import com.fasterxml.jackson.databind.JsonNode;
 import edu.norwich.cs509.card.db.GetCardListDB;
+import edu.norwich.cs509.card.db.GetImageListDB;
 import edu.norwich.cs509.card.db.GetTextListDB;
 
 public class ShowCardHandler implements RequestStreamHandler {
@@ -31,6 +32,22 @@ public class ShowCardHandler implements RequestStreamHandler {
 		if (gtl.getTexts(eventtype, recipient, page)){
 			rs = gtl.getResultSet();
 			logger.log("page " + String.valueOf(page) + ": getTextListSuccess");
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	ResultSet rs1;
+	boolean getImageList(String eventtype, String recipient, int page) throws Exception {
+		if (logger != null) { logger.log("in showCard"); }
+		 GetImageListDB gil = new GetImageListDB();
+		
+		// check if present
+		if (gil.getImages(eventtype, recipient, page)){
+			rs1 = gil.getResultSet();
+			logger.log("page " + String.valueOf(page) + ": getImageListSuccess");
 			return true;
 		}
 		else {
@@ -151,6 +168,78 @@ public class ShowCardHandler implements RequestStreamHandler {
 						    	for (int i = 1; i <= columnCount; i++) {
 						    		String columnName =metaData.getColumnLabel(i);
 						    		String value = rs.getString(columnName);
+						    		jsonObj.put(columnName, value);
+						    		logger.log(jsonObj.toJSONString());
+						        } 
+						    	if(!rs.next()) {
+						    		flag =-1;
+						    	}
+						        page3.add(jsonObj); 
+						    }
+				}
+				if (getImageList(eventtype, recipient, 0)) {
+				    ResultSetMetaData metaData = rs.getMetaData();
+				    int columnCount = metaData.getColumnCount();
+				    int flag =0;
+				    while (flag==0) {
+				    	JSONObject jsonObj = new JSONObject();
+				    	for (int i = 1; i <= columnCount; i++) {
+				    		String columnName =metaData.getColumnLabel(i);
+				    		String value = rs.getString(columnName);
+				    		jsonObj.put(columnName, value);
+				    		logger.log(jsonObj.toJSONString());
+				        } 
+				    	if(!rs.next()) {
+				    		flag =-1;
+				    	}
+				        page0.add(jsonObj); 
+				    }
+				}
+				if (getImageList(eventtype, recipient, 1)) {
+					ResultSetMetaData metaData = rs1.getMetaData();
+				    int columnCount = metaData.getColumnCount();
+				    int flag =0;
+				    while (flag==0) {
+				    	JSONObject jsonObj = new JSONObject();
+				    	for (int i = 1; i <= columnCount; i++) {
+				    		String columnName =metaData.getColumnLabel(i);
+				    		String value = rs1.getString(columnName);
+				    		jsonObj.put(columnName, value);
+				    		logger.log(jsonObj.toJSONString());
+				        } 
+				    	if(!rs.next()) {
+				    		flag =-1;
+				    	}
+				        page1.add(jsonObj); 
+				    }
+				}
+				 if (getImageList(eventtype, recipient, 2)) {
+					 	ResultSetMetaData metaData = rs1.getMetaData();
+					    int columnCount = metaData.getColumnCount();
+					    int flag =0;
+					    while (flag==0) {
+					    	JSONObject jsonObj = new JSONObject();
+					    	for (int i = 1; i <= columnCount; i++) {
+					    		String columnName =metaData.getColumnLabel(i);
+					    		String value = rs1.getString(columnName);
+					    		jsonObj.put(columnName, value);
+					    		logger.log(jsonObj.toJSONString());
+					        } 
+					    	if(!rs.next()) {
+					    		flag =-1;
+					    	}
+					        page2.add(jsonObj); 
+					    }
+				 }
+				if (getImageList(eventtype, recipient, 3)) {
+						    ResultSetMetaData metaData = rs1.getMetaData();
+						    int columnCount = metaData.getColumnCount();
+						    int flag =0;
+						    while (flag==0) {
+						    	JSONObject jsonObj = new JSONObject();
+						    	for (int i = 1; i <= columnCount; i++) {
+						    		String columnName =metaData.getColumnLabel(i);
+						    		String value = rs1.getString(columnName);
 						    		jsonObj.put(columnName, value);
 						    		logger.log(jsonObj.toJSONString());
 						        } 
