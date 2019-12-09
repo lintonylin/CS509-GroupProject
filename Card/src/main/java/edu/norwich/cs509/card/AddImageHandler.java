@@ -2,11 +2,14 @@ package edu.norwich.cs509.card;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -46,7 +49,7 @@ public class AddImageHandler implements RequestStreamHandler {
 	 * 
 	 * @throws Exception 
 	 */
-	boolean addSysImage(String eventtype, String recipient, String orientation, int left, int top, int width, int height, String image, int image_id, int page) throws Exception {
+	boolean addSysImage(String eventtype, String recipient, String orientation, int left, int top, int width, int height, String image, String imagetype, int image_id, int page) throws Exception {
 		if (logger != null) { logger.log("in addImage"); }
 		
 		if (s3 == null) {
@@ -73,11 +76,18 @@ public class AddImageHandler implements RequestStreamHandler {
 		ByteArrayInputStream bais = new ByteArrayInputStream(Base64.decodeBase64(image));
 		ObjectMetadata omd = new ObjectMetadata();
 		omd.setContentLength(Base64.decodeBase64(image).length);
+		//omd.setContentType(imagetype);
+		File uploadFile = new File(String.valueOf(image_id));
+		Writer out = new FileWriter(uploadFile);
+		out.write(image);
+		out.close();
 		
 		// makes the object publicly visible
-		PutObjectResult res = s3.putObject(new PutObjectRequest("cs509norwichfans", bucket + String.valueOf(image_id), bais, omd)
-				.withCannedAcl(CannedAccessControlList.PublicRead));
-		
+		//PutObjectResult res = s3.putObject(new PutObjectRequest("cs509norwichfans", bucket + String.valueOf(image_id), bais, omd)
+		//		.withCannedAcl(CannedAccessControlList.PublicRead));
+		s3.putObject(new PutObjectRequest("cs509norwichfans", bucket + String.valueOf(image_id), uploadFile)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+		uploadFile.delete();
 		return true;
 		
 		/*
@@ -100,11 +110,22 @@ public class AddImageHandler implements RequestStreamHandler {
 	boolean addImage(String eventtype, String recipient, String orientation, int left, int top, int width, int height, String image, int image_id, int page) throws Exception {
 		if (logger != null) { logger.log("in addImage"); }
 		
-		
+		if (s3 == null) {
+			logger.log("attach to S3 request");
+			s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.US_EAST_1).build();
+			logger.log("attach to S3 succeed");
+		}
+
+		String bucket = REAL_BUCKET;
+		boolean useTestDB = System.getenv("TESTING") != null;
+		if (useTestDB) {
+			bucket = TEST_BUCKET;
+		}
 		AddImageDB aid = new AddImageDB();
 		
 		// check if present
-		if (aid.addImage(eventtype, recipient, orientation, left, top, width, height, image, image_id, page)){
+    	String s3url = "https://cs509norwichfans.s3.amazonaws.com/" + bucket +  String.valueOf(image_id);
+		if (aid.addImage(eventtype, recipient, orientation, left, top, width, height, image, s3url, page)){
 			return true;
 		}
 		else {
@@ -197,6 +218,9 @@ public class AddImageHandler implements RequestStreamHandler {
 		param = node.get("image_id").asText();
 		image_id = Integer.valueOf(param);
 		
+		param = node.get("imagetype").asText();
+		String imagetype = param;
+		
 		int left = 0, top = 0, width = 0, height = 0;
 		
 		int para = Integer.parseInt(position.get("left").asText());
@@ -236,7 +260,7 @@ public class AddImageHandler implements RequestStreamHandler {
 	    	//add to S3 bucket
 			if (image.length() > 0) {
 				try {
-					if (addSysImage(eventtype, recipient, orientation, left, top, width, height, image, image_id, page)) {
+					if (addSysImage(eventtype, recipient, orientation, left, top, width, height, image, imagetype, image_id, page)) {
 						statusCode = 200;
 						if (addImage(eventtype, recipient, orientation, left, top, width, height, image, image_id, page)) {
 							statusCode = 200;

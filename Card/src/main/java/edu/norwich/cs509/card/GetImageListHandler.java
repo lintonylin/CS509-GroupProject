@@ -85,7 +85,7 @@ public class GetImageListHandler implements RequestStreamHandler {
 					System.out.println("Unable to parse contents of " + name);
 				}
 		    }
-		System.out.println(images.get(0));
+		//System.out.println(images.get(0));
 		
 		return images;
 	}
@@ -129,20 +129,27 @@ public class GetImageListHandler implements RequestStreamHandler {
 				
 		      S3Object obj = s3.getObject("cs509norwichfans", name);
 		    	
-		    	try (S3ObjectInputStream constantStream = obj.getObjectContent()) {
-					Scanner sc = new Scanner(constantStream);
-					String val = sc.nextLine();
-					sc.close();
+		    	//try (S3ObjectInputStream constantStream = obj.getObjectContent()) {
+				//	Scanner sc = new Scanner(constantStream);
+				//	byte[] val = new byte[200000];
+				//	int i = 0;
+				//	val[i] = sc.nextByte();
+				//	while (sc.hasNextByte()) {
+				//		val[++i] = sc.nextByte();
+				//	}
+				//	sc.close();
 					
 					// just grab name *after* the slash. Note this is a SYSTEM constant
 					int postSlash = name.indexOf('/');
 			    	JSONObject jsonObj = new JSONObject();
-		    		jsonObj.put(name.substring(postSlash+1), val);
-		    		a.add(name.substring(postSlash+1));
+			    	String image = "https://cs509norwichfans.s3.amazonaws.com/" + bucket + "/" +  name.substring(postSlash+1);
+		    		// String image = new String(val);
+			    	//jsonObj.put(name.substring(postSlash+1), image);
+		    		a.add(image);
 					// sysConstants.add(new Constant(name.substring(postSlash+1), Double.valueOf(val), true));
-				} catch (Exception e) {
-					logger.log("Unable to parse contents of " + name);
-				}
+				//} catch (Exception e) {
+				//	logger.log("Unable to parse contents of " + name);
+				//}
 		    }
 			
 			//return sysConstants;

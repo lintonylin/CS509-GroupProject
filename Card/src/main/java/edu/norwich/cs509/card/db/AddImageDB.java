@@ -17,14 +17,14 @@ public class AddImageDB {
     	}
     }
     
-    public boolean addImage(String eventtype, String recipient, String orientation, int left, int top, int width, int height, String image, int image_id, int page) throws Exception {
+    public boolean addImage(String eventtype, String recipient, String orientation, int left, int top, int width, int height, String image, String image_id, int page) throws Exception {
         try {
         	PreparedStatement ps = conn.prepareStatement("INSERT INTO ImageElements (left_corner, top, width, height, s3ID, page, eventtype, recipient) values (?, ?, ?, ?, ?, ?, ?, ?);");
             ps.setInt(1, left);  //user input left
             ps.setInt(2, top);  //user input top
             ps.setInt(3, width);  //user input width
             ps.setInt(4, height);  //user input height
-            ps.setInt(5, image_id);  // user input text
+            ps.setString(5, image_id);  // user input text
             ps.setInt(6, page);   // the card page
             ps.setString(7, eventtype);  //the card eventtype
             ps.setString(8, recipient);   // the card recipient    

@@ -32,8 +32,8 @@ public class ShowCardImageHandlerTest extends LambdaTest {
         
         JsonNode outputNode = Jackson.fromJsonString(output.toString(), JsonNode.class);       
         JsonNode body = Jackson.fromJsonString(outputNode.get("body").asText(), JsonNode.class);
-        JsonNode page1 = Jackson.fromJsonString(body.get("page1").asText(), JsonNode.class);
-        System.out.println(page1);
+        JsonNode page2 = Jackson.fromJsonString(body.get("page2").asText(), JsonNode.class);
+        System.out.println(page2);
         //Assert.assertEquals(outgoing, body.get("result").asText());
         Assert.assertEquals("200", outputNode.get("statusCode").asText());
     }
