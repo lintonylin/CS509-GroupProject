@@ -22,7 +22,37 @@ function GetCard(){
 }
 
 
+function refreshImageList(){
+	var imagelist = document.getElementById("s3source");
+	console.log(imagelist);
+	imagelist.options.length=0;
+	console.log("JS:" + js);
+	var xhr = new XMLHttpRequest();
+	xhr.open("get", getImageList_url, true);
+	xhr.send();
+	xhr.onloadend = function () {
+		console.log(xhr);
+	    console.log(xhr.request);
+	    if (xhr.readyState == XMLHttpRequest.DONE) {
+	    	if (xhr.status == 200) {
+	    		insertImage(xhr.responseText);
+	    	}else{console.log("fail to load imagelist");}
+	    }
+	};
+	console.log(xhr);
+}
 
+
+function insertImage(response){
+	var js;
+	var imagelist = document.getElementById("s3source");
+	js = JSON.parse(response);
+	for(var i = 0; i<js.length; i++){
+		var name = js[i].substr(49);
+		imagelist.options[imagelist.length] = new Option(name, js[i]);
+	}
+	console.log(js);
+}
 
 function refreshElementList(){
 	var select = document.getElementById("elementList");
@@ -47,9 +77,11 @@ function refreshElementList(){
 	    console.log(xhr);
 	    console.log(xhr.request);
 	    if (xhr.readyState == XMLHttpRequest.DONE) {
-	    	console.log ("XHR:" + xhr.responseText);
-	    	processDisplayCardResponse(xhr.responseText);
-	    	InsertToSelect(select);
+	    	if (xhr.status == 200) {
+	    		console.log ("XHR:" + xhr.responseText);
+	    		processDisplayCardResponse(xhr.responseText);
+	    		InsertToSelect(select);
+	    	}
 	    } else {
 	    	processDisplayCardResponse("N/A");
 		}
@@ -59,6 +91,7 @@ function refreshElementList(){
 }
 
 function processDisplayCardResponse(response) {
+	var js;
 	js = JSON.parse(response);
 	front = JSON.parse(js["page0"]);
 	innerleft = JSON.parse(js["page1"]);
@@ -96,6 +129,7 @@ function InsertToSelect(select){
 function OnCardLoad(){
 	GetCard();
 	refreshElementList();
+	refreshImageList();
 }
 
 function handleShowCardClick(){

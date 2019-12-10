@@ -13,3 +13,5 @@ var addimageelement_url = base_url + "addImageItem";
 var deleteelement_url = base_url + "deleteVisualElement";
 var edittextelement_url = base_url + "editTextElement";
 var editimageelement_url = base_url + "editImageElement";
+
+var getImageList_url = base_url +"imageList";

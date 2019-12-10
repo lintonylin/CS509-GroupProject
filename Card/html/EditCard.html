@@ -23,6 +23,8 @@
   	 	Page
   	 	<select id='page'>
   	 		<option value=0>front</option>
+  	 		<option value=1>inner left</option>
+  	 		<option value=2>inner right</option>
   	 	</select></p>
     	<p id='type'>Text</p>
     	<p class = "text">Font<select id='font' >
@@ -37,6 +39,17 @@
     	Width<input id='w' type="number" name="points" min="0" max="900" /> 
     	Height<input id='h' type="number" name="points" min="0" max="900" />
  		</p>
+ 		<p class = "image">
+ 		Select image <select id ='s3source'>
+ 			<option value= "test option1">test1</option>
+ 		</select></p>
+ 		
+ 		<p class = "image">
+ 		Upload Image <input id ="uploadImage" type ="file" onchange="setbase64()"/>
+ 		</p>
+ 		<p class = "image">
+ 		Image Name for Upload file<input id = "imagename" type ="text"/></p>
+ 		
  		<p class = 'text'>
  		Text <input id='text' type="text"/> 
  		</p>

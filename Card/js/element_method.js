@@ -1,6 +1,8 @@
 var textItem = document.getElementsByClassName('text');
 var noneditable = document.getElementsByClassName('ne');
+var imageItem = document.getElementsByClassName('image');
 var info;
+var base64;
 
 
 function deleteElement(){
@@ -79,6 +81,9 @@ function Hide(){
 	for(i = 0; i < textItem.length; i++) {
     	textItem[i].classList.remove('hide');
      }
+	for(i = 0; i < imageItem.length; i++) {
+    	imageItem[i].classList.remove('hide');
+     }
 	document.getElementById('modal').reset();
 	document.getElementById('shade').classList.add('hide');
     document.getElementById('modal').classList.add('hide');
@@ -101,10 +106,14 @@ function Hide(){
 
 function setForm(n){
 	if(n == 2){
+		for(i = 0; i < imageItem.length; i++) {
+	    	imageItem[i].classList.add('hide');
+	     }
 		document.getElementById('update').disabled = true;
 		document.getElementById('add').onclick = function(){
 			addTextRequest();
 		};
+	}
 	if(n == 3){
 		document.getElementById('update').disabled = true;
 		document.getElementById('type').innerHTML= "Image";
@@ -115,9 +124,7 @@ function setForm(n){
 		document.getElementById('add').onclick = function(){
 			addImageRequest();
 		}
-	};
-//		TODO:mute image selection
-	}
+		};
 	if(n == 0){
 	    var i
 	    for(i = 0; i < noneditable.length; i++) {
@@ -192,43 +199,65 @@ function addTextRequest(){
 	xhr.send(js);
 	xhr.onloadend = function () {
 		    if (xhr.readyState == XMLHttpRequest.DONE) {
-		      console.log ("XHR:" + xhr.responseText);
-		      Hide();
-		      refreshElementList();
-		    } else {
-		    	
-		    }
+		    	if (xhr.status == 200) {
+		    		console.log ("XHR:" + xhr.responseText);
+		    		Hide();
+		    		refreshElementList();
+		    	}else {
+			    	console.log("something going wrong");
+			    }
+		    } 
 		  };
 }
 
+
+function setbase64(){
+	var file =document.getElementById('uploadImage').files[0];
+	var reader = new FileReader();
+	reader.readAsDataURL(file,"UTF-8");
+	reader.onload = function (e){
+		 if (reader.readyState == XMLHttpRequest.DONE){ 
+			 base64 = this.result;
+		 }
+	}
+	
+
+}
+
+
 function addImageRequest(){
+	console.log(base64);
 	var data ={};
 	var position={};
 	position['top'] = parseInt(document.getElementById('t').value);
-//	TODO: Modify variable name 'left';
 	position['left'] = parseInt(document.getElementById('l').value);
 	position['height'] = parseInt(document.getElementById('h').value);
 	position['width'] = parseInt(document.getElementById('w').value);
 	data["card"] = card;
 	data["position"] = position; 
-	data["text"] = document.getElementById('text').value;
 	data["page"] = parseInt(document.getElementById('page').value);
-	data["font"] = document.getElementById('font').value;
-	var js = JSON.stringify(data);
-	console.log(js);
+	console.log(document.getElementById('uploadImage').value);
+//	data["url"] = fileStringBase64;
+//	title = fileStringBase64.split(";");
+//	console.log(title[0]);
+//	
 	
-	var xhr = new XMLHttpRequest();
-	xhr.open("post", addimageelement_url, true);
-	xhr.send(js);
-	xhr.onloadend = function () {
-		    if (xhr.readyState == XMLHttpRequest.DONE) {
-		      console.log ("XHR:" + xhr.responseText);
-		      Hide();
-		      refreshElementList();
-		    } else {
-		    	
-		    }
-		  };
+	
+//	var js = JSON.stringify(data);
+//	console.log(js);
+//	
+//	var xhr = new XMLHttpRequest();
+//	xhr.open("post", addimageelement_url, true);
+//	xhr.send(js);
+//	xhr.onloadend = function () {
+//		    if (xhr.readyState == XMLHttpRequest.DONE) {
+//		      console.log ("XHR:" + xhr.responseText);
+//		      Hide();
+//		      refreshElementList();
+//		    } else {
+//		    	
+//		    }
+//		  };
 }
 
 function deleteElementRequest(id){

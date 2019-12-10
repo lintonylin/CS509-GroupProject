@@ -41,7 +41,7 @@ public class AddImageHandler implements RequestStreamHandler {
 	 * 
 	 * @throws Exception 
 	 */
-	boolean addSysImage(String eventtype, String recipient, String orientation, int left, int top, int width, int height, String image, String imagetype, int image_id, int page) throws Exception {
+	boolean addSysImage(String eventtype, String recipient, String orientation, int left, int top, int width, int height, String image, int image_id, int page) throws Exception {
 		if (logger != null) { logger.log("in addImage"); }
 		
 		if (s3 == null) {
@@ -210,9 +210,6 @@ public class AddImageHandler implements RequestStreamHandler {
 		param = node.get("image_id").asText();
 		image_id = Integer.valueOf(param);
 		
-		param = node.get("imagetype").asText();
-		String imagetype = param;
-		
 		int left = 0, top = 0, width = 0, height = 0;
 		
 		int para = Integer.parseInt(position.get("left").asText());
@@ -252,7 +249,7 @@ public class AddImageHandler implements RequestStreamHandler {
 	    	//add to S3 bucket
 			if (image.length() > 0) {
 				try {
-					if (addSysImage(eventtype, recipient, orientation, left, top, width, height, image, imagetype, image_id, page)) {
+					if (addSysImage(eventtype, recipient, orientation, left, top, width, height, image, image_id, page)) {
 						statusCode = 200;
 						if (addImage(eventtype, recipient, orientation, left, top, width, height, image, image_id, page)) {
 							statusCode = 200;
