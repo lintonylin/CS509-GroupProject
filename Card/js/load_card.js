@@ -72,7 +72,11 @@ function setPage(page,select,pageNo){
 	var i;
 	for(i = 0; i < page.length; i++){
 		var option = document.createElement("option");
-		option.text =  "ID : " + page[i]["text_ID"] + "; Type: Text;" + " On Page:" + pageNo;
+		if(page[i]["text_ID"]> 0 ){
+			option.text =  "Text_ID : " + page[i]["text_ID"] + "; Type: Text;" + " On Page:" + pageNo;
+		}else{
+			option.text =  "Image_ID : " + page[i]["image_ID"] + "; Type: Image;" + " On Page:" + pageNo;
+		}
 		option.value = JSON.stringify(page[i]);
 		console.log(option.value);
 		select.add(option);

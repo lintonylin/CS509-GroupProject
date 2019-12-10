@@ -16,6 +16,7 @@ function deleteElement(){
 	deleteElementRequest(info.text_ID);
 //	TODO: send request;
 }
+
 function editElement(){
 	info  = getInfoFromSelect();
 	if(info == -1){
@@ -26,9 +27,17 @@ function editElement(){
 		alert("Cannot edit back page.")
 		return;
 	}
-	console.log(info.text_ID);
-	console.log(info);
-	setForm(0);
+	if(info.text_ID>0){
+		console.log(info.text_ID);
+		console.log(info);
+		setForm(0);
+	}
+	else{
+		console.log(info.s3ID.substr(49));
+		console.log(info);
+		setForm(1);
+	}
+
 	Show();
 	//	TODO: send request;
 }
@@ -47,12 +56,17 @@ function addTextElement(){
 	//	TODO: mute image selections;
 	Show();
 }
+function addImageElement(){
+	setForm(3); //0 for update text, 1 for update image, 2 for add text 3 for add image
+	//	TODO: mute image selections;
+	Show();
+}
 
 function Show(){
-	
     document.getElementById('shade').classList.remove('hide');
     document.getElementById('modal').classList.remove('hide');
     document.getElementById('addtext').classList.add('hide');
+    document.getElementById('addimage').classList.add('hide');
     document.getElementById('delete').classList.add('hide');
     document.getElementById('edit').classList.add('hide');
 }
@@ -62,10 +76,14 @@ function Hide(){
     for(i = 0; i < noneditable.length; i++) {
     	noneditable[i].classList.remove('hide');
      }
+	for(i = 0; i < textItem.length; i++) {
+    	textItem[i].classList.remove('hide');
+     }
 	document.getElementById('modal').reset();
 	document.getElementById('shade').classList.add('hide');
     document.getElementById('modal').classList.add('hide');
     document.getElementById('addtext').classList.remove('hide');
+    document.getElementById('addimage').classList.remove('hide');
     document.getElementById('delete').classList.remove('hide');
     document.getElementById('edit').classList.remove('hide');
     
@@ -87,6 +105,17 @@ function setForm(n){
 		document.getElementById('add').onclick = function(){
 			addTextRequest();
 		};
+	if(n == 3){
+		document.getElementById('update').disabled = true;
+		document.getElementById('type').innerHTML= "Image";
+		for(i = 0; i < textItem.length; i++) {
+	    	textItem[i].classList.add('hide');
+		}
+
+		document.getElementById('add').onclick = function(){
+			addImageRequest();
+		}
+	};
 //		TODO:mute image selection
 	}
 	if(n == 0){
@@ -95,7 +124,13 @@ function setForm(n){
 	    	noneditable[i].classList.add('hide');
 	     }
 	    document.getElementById('Id').classList.remove('hide');
-	    document.getElementById('Id').innerHTML= info.text_ID;
+	    if(info.text_ID>0){
+	    	document.getElementById('Id').innerHTML= info.text_ID;
+		    document.getElementById('type').innerHTML= "Text";
+	    }else{
+	    	document.getElementById('Id').innerHTML= info.image_ID;
+	    	document.getElementById('type').innerHTML= "Image";
+	    }
 	    document.getElementById('t').setAttribute('value',info.top);
 	    document.getElementById('l').setAttribute('value',info.left_corner);
 	    document.getElementById('h').setAttribute('value',info.height);
@@ -104,9 +139,35 @@ function setForm(n){
 	    document.getElementById('add').disabled = true;
 	    document.getElementById('font').value = info.font;
 	    document.getElementById('update').onclick = function(){
-	    	editElementRequest();
+	    	editElementRequest(1);
 		};
 	    
+	}
+	if(n == 1){
+	    var i
+	    for(i = 0; i < noneditable.length; i++) {
+	    	noneditable[i].classList.add('hide');
+	     }
+	    document.getElementById('Id').classList.remove('hide');
+	    if(info.text_ID>0){
+	    	document.getElementById('Id').innerHTML= info.text_ID;
+		    document.getElementById('type').innerHTML= "Text";
+	    }else{
+	    	document.getElementById('Id').innerHTML= info.image_ID;
+	    	document.getElementById('type').innerHTML= "Image";
+	    }
+	    document.getElementById('t').setAttribute('value',info.top);
+	    document.getElementById('l').setAttribute('value',info.left_corner);
+	    document.getElementById('h').setAttribute('value',info.height);
+	    document.getElementById('w').setAttribute('value',info.width);
+	    for(i = 0; i < textItem.length; i++) {
+	    	textItem[i].classList.add('hide');
+	     }
+
+	    document.getElementById('add').disabled = true;
+	    document.getElementById('update').onclick = function(){
+	    	editElementRequest(2);
+		};   
 	}
 }
 
@@ -140,6 +201,36 @@ function addTextRequest(){
 		  };
 }
 
+function addImageRequest(){
+	var data ={};
+	var position={};
+	position['top'] = parseInt(document.getElementById('t').value);
+//	TODO: Modify variable name 'left';
+	position['left'] = parseInt(document.getElementById('l').value);
+	position['height'] = parseInt(document.getElementById('h').value);
+	position['width'] = parseInt(document.getElementById('w').value);
+	data["card"] = card;
+	data["position"] = position; 
+	data["text"] = document.getElementById('text').value;
+	data["page"] = parseInt(document.getElementById('page').value);
+	data["font"] = document.getElementById('font').value;
+	var js = JSON.stringify(data);
+	console.log(js);
+	
+	var xhr = new XMLHttpRequest();
+	xhr.open("post", addimageelement_url, true);
+	xhr.send(js);
+	xhr.onloadend = function () {
+		    if (xhr.readyState == XMLHttpRequest.DONE) {
+		      console.log ("XHR:" + xhr.responseText);
+		      Hide();
+		      refreshElementList();
+		    } else {
+		    	
+		    }
+		  };
+}
+
 function deleteElementRequest(id){
 	var data={};
 	data["card"] = card;
@@ -158,25 +249,31 @@ function deleteElementRequest(id){
 	  };
 }
 
-function editElementRequest(){
-	var data={};
+function editElementRequest(i){
 	var data={};
 	var element={};
-	element["card"]= card;
-	element["eid"] = parseInt(document.getElementById('Id').value);
+	var type;
+	type =document.getElementById("type").innerHTML;
+	data["card"] = card;
 	var position={};
 	position['top'] = parseInt(document.getElementById('t').value);
-//	TODO: Modify variable name 'left';
 	position['left'] = parseInt(document.getElementById('l').value);
 	position['height'] = parseInt(document.getElementById('h').value);
 	position['width'] = parseInt(document.getElementById('w').value);
-	data["element"] = element;
+	data["eid"] = parseInt(document.getElementById('Id').innerHTML);
 	data["position"] = position;
-	data["font"] = document.getElementById('font').value;
-	data["text"] = document.getElementById('text').value;
-	
+	var url;
+	if(i == 1){
+		data["font"] = document.getElementById('font').value;
+		data["text"] = document.getElementById('text').value;
+		url = edittextelement_url;
+	}else{
+		url = editimageelement_url;
+	}
+	var js = JSON.stringify(data);
+	console.log(js);
 	var xhr = new XMLHttpRequest();
-	xhr.open("post", editelement_url, true);
+	xhr.open("post", url, true);
 	xhr.send(js);
 	xhr.onloadend = function () {
 		    if (xhr.readyState == XMLHttpRequest.DONE) {
