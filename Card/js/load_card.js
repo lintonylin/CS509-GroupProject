@@ -48,8 +48,8 @@ function insertImage(response){
 	var imagelist = document.getElementById("s3source");
 	js = JSON.parse(response);
 	for(var i = 0; i<js.length; i++){
-		var name = js[i].substr(49);
-		imagelist.options[imagelist.length] = new Option(name, js[i]);
+		var name = js[i].substr(56);
+		imagelist.options[imagelist.length] = new Option(name, name);
 	}
 	console.log(js);
 }

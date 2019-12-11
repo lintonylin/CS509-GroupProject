@@ -2,8 +2,8 @@ var textItem = document.getElementsByClassName('text');
 var noneditable = document.getElementsByClassName('ne');
 var imageItem = document.getElementsByClassName('image');
 var info;
-var base64;
-
+var base64 ="";
+var reader = new FileReader();
 
 function deleteElement(){
 	var info  = getInfoFromSelect();
@@ -15,8 +15,11 @@ function deleteElement(){
 		alert("Cannot edit back page.")
 		return;
 	}
-	deleteElementRequest(info.text_ID);
-//	TODO: send request;
+	if(info.text_ID>0){
+		deleteElementRequest(info.text_ID, 0);
+	}else{
+		deleteElementRequest(info.image_ID,1);
+	}
 }
 
 function editElement(){
@@ -130,6 +133,9 @@ function setForm(n){
 	    for(i = 0; i < noneditable.length; i++) {
 	    	noneditable[i].classList.add('hide');
 	     }
+	    for(i = 0; i < imageItem.length; i++) {
+	    	imageItem[i].classList.add('hide');
+	     }
 	    document.getElementById('Id').classList.remove('hide');
 	    if(info.text_ID>0){
 	    	document.getElementById('Id').innerHTML= info.text_ID;
@@ -154,6 +160,9 @@ function setForm(n){
 	    var i
 	    for(i = 0; i < noneditable.length; i++) {
 	    	noneditable[i].classList.add('hide');
+	     }
+	    for(i = 0; i < imageItem.length; i++) {
+	    	imageItem[i].classList.add('hide');
 	     }
 	    document.getElementById('Id').classList.remove('hide');
 	    if(info.text_ID>0){
@@ -182,7 +191,6 @@ function addTextRequest(){
 	var data ={};
 	var position={};
 	position['top'] = parseInt(document.getElementById('t').value);
-//	TODO: Modify variable name 'left';
 	position['left'] = parseInt(document.getElementById('l').value);
 	position['height'] = parseInt(document.getElementById('h').value);
 	position['width'] = parseInt(document.getElementById('w').value);
@@ -213,11 +221,11 @@ function addTextRequest(){
 
 function setbase64(){
 	var file =document.getElementById('uploadImage').files[0];
-	var reader = new FileReader();
+	
 	reader.readAsDataURL(file,"UTF-8");
 	reader.onload = function (e){
 		 if (reader.readyState == XMLHttpRequest.DONE){ 
-			 base64 = this.result;
+			console.log(reader.result);
 		 }
 	}
 	
@@ -225,7 +233,11 @@ function setbase64(){
 }
 
 
-function addImageRequest(){
+function addImageRequest(){ 
+	if (typeof(reader.result) == 'undefined') {
+		base64 = reader.result;
+	}
+	
 	console.log(base64);
 	var data ={};
 	var position={};
@@ -237,36 +249,51 @@ function addImageRequest(){
 	data["position"] = position; 
 	data["page"] = parseInt(document.getElementById('page').value);
 	console.log(document.getElementById('uploadImage').value);
-//	data["url"] = fileStringBase64;
-//	title = fileStringBase64.split(";");
-//	console.log(title[0]);
-//	
+
+	if(base64.length > 0){
+		data["url"] = base64;
+		data["image_id"] = parseInt(document.getElementById("imagename").value);
+		console.log(data["image_id"].length);
+		if(data["image_id"].length<1){
+			alert("Please enter name for this image");
+			return 0;
+		}
+	}else{
+		data["url"] = "";
+		data["image_id"] = parseInt(document.getElementById("s3source").value);
+	}
+
 	
+	var js = JSON.stringify(data);
+	console.log(js);
 	
-//	var js = JSON.stringify(data);
-//	console.log(js);
-//	
-//	var xhr = new XMLHttpRequest();
-//	xhr.open("post", addimageelement_url, true);
-//	xhr.send(js);
-//	xhr.onloadend = function () {
-//		    if (xhr.readyState == XMLHttpRequest.DONE) {
-//		      console.log ("XHR:" + xhr.responseText);
-//		      Hide();
-//		      refreshElementList();
-//		    } else {
-//		    	
-//		    }
-//		  };
+	var xhr = new XMLHttpRequest();
+	xhr.open("post", addimageelement_url, true);
+	xhr.send(js);
+	xhr.onloadend = function () {
+		    if (xhr.readyState == XMLHttpRequest.DONE) {
+		      console.log ("XHR:" + xhr.responseText);
+		      Hide();
+		      refreshElementList();
+		    } else {
+		    	
+		    }
+		  };
 }
 
-function deleteElementRequest(id){
+function deleteElementRequest(id,flag){
 	var data={};
 	data["card"] = card;
 	data["eid"] = parseInt(id);
 	var js = JSON.stringify(data);
 	var xhr = new XMLHttpRequest();
-	xhr.open("post",deleteelement_url, true);
+	var delurl;
+	if(flag == 0){
+		delurl=deleteelement_url;
+	}else{
+		delurl = deleteimage_url;
+	}
+	xhr.open("post",delurl, true);
 	xhr.send(js);
 	xhr.onloadend = function () {
 	    if (xhr.readyState == XMLHttpRequest.DONE) {

@@ -22,7 +22,6 @@ function handleDeleteCardClick(k) {
 	console.log(k);
   var table = document.getElementById("CardListTable");
   var EventType = table.rows[k].cells[0].innerHTML;
-  console.log(EventType);
   var Recipient = table.rows[k].cells[1].innerHTML;
   
   var data = {};

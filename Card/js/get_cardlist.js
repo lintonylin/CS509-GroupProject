@@ -47,7 +47,8 @@ function processCardListResponse(result) {
 	  btn.innerHTML ="Delete";
 	  var btn2 = document.createElement("BUTTON");
 	  btn2.innerHTML = "Edit";
-	  
+	  var btn3 = document.createElement("BUTTON");
+	  btn3.innerHTML = "Duplicate"
 
 	  const y = i;
 	  console.log(y);
@@ -57,11 +58,15 @@ function processCardListResponse(result) {
 	  btn2.onclick = function(){
 		  handleEditCardClick(y+1);
 	  };
+	  btn3.onclick = function(){
+		  handleDuplicateCardClick(y+1);
+	  };
 	  eventnode.innerHTML = js[i]['eventtype'];
 	  recinode.innerHTML = js[i]['recipient'];
 	  orinode.innerHTML = js[i]['orientation'];
 	  delenode.append(btn);
 	  delenode.append(btn2);
+	  delenode.append(btn3);
   }
 
 }
